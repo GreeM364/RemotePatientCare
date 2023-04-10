@@ -1,7 +1,7 @@
 ﻿
 namespace RemotePatientCare.DAL.Models
 {
-    internal class Hospital : BaseModel
+    public class Hospital : BaseModel
     {
         public string Name { get; set; } = null!;
         public string Address { get; set; } = null!;

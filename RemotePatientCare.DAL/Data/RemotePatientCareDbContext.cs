@@ -3,7 +3,7 @@ using RemotePatientCare.DAL.Models;
 
 namespace RemotePatientCare.DAL.Data
 {
-    internal class RemotePatientCareDbContext : DbContext
+    public class RemotePatientCareDbContext : DbContext
     {
         public RemotePatientCareDbContext(DbContextOptions<RemotePatientCareDbContext> options) : base(options) { }
 

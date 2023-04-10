@@ -1,9 +1,8 @@
 ﻿
 namespace RemotePatientCare.DAL.Models
 {
-    internal class Doctor
+    public class Doctor : BaseModel
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
         public DateTime BeginningWorkingDay { get; set; }
         public DateTime EndWorkingDay { get; set; }
 

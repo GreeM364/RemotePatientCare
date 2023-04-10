@@ -1,7 +1,7 @@
 ﻿
 namespace RemotePatientCare.DAL.Models
 {
-    internal abstract class BaseModel
+    public abstract class BaseModel
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string? CreatedBy { get; set; }
