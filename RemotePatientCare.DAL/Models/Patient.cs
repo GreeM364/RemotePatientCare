@@ -9,7 +9,7 @@ namespace RemotePatientCare.DAL.Models
         public string? DoctorId { get; set; }
         public Doctor? Doctor { get; set; }
 
-        public string? PatientCaretakerId { get; set; }
+        public string? CaregiverPatientId { get; set; }
         public CaregiverPatient? CaregiverPatient { get; set; }
 
         public string HospitalId { get; set; } = null!;

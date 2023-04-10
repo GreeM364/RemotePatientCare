@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RemotePatientCare.DAL.Data;
 
@@ -11,9 +12,11 @@ using RemotePatientCare.DAL.Data;
 namespace RemotePatientCare.DAL.Migrations
 {
     [DbContext(typeof(RemotePatientCareDbContext))]
-    partial class RemotePatientCareDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230410195216_AddApplicationUser")]
+    partial class AddApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,10 +32,6 @@ namespace RemotePatientCare.DAL.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -51,10 +50,6 @@ namespace RemotePatientCare.DAL.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -137,19 +132,11 @@ namespace RemotePatientCare.DAL.Migrations
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserRole<string>");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -398,6 +385,9 @@ namespace RemotePatientCare.DAL.Migrations
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("PatientCaretakerId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -449,20 +439,6 @@ namespace RemotePatientCare.DAL.Migrations
                     b.ToTable("BaseUsers");
                 });
 
-            modelBuilder.Entity("RemotePatientCare.DAL.Identity.ApplicationRole", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
-
-                    b.HasDiscriminator().HasValue("ApplicationRole");
-                });
-
-            modelBuilder.Entity("RemotePatientCare.DAL.Identity.ApplicationUserRole", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<string>");
-
-                    b.HasDiscriminator().HasValue("ApplicationUserRole");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -497,6 +473,12 @@ namespace RemotePatientCare.DAL.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("RemotePatientCare.DAL.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -513,7 +495,7 @@ namespace RemotePatientCare.DAL.Migrations
                     b.HasOne("RemotePatientCare.DAL.Models.User", "User")
                         .WithOne("CaregiverPatient")
                         .HasForeignKey("RemotePatientCare.DAL.Models.CaregiverPatient", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -524,13 +506,13 @@ namespace RemotePatientCare.DAL.Migrations
                     b.HasOne("RemotePatientCare.DAL.Models.Hospital", "Hospital")
                         .WithMany("Doctors")
                         .HasForeignKey("HospitalId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RemotePatientCare.DAL.Models.User", "User")
                         .WithOne("Doctor")
                         .HasForeignKey("RemotePatientCare.DAL.Models.Doctor", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Hospital");
@@ -543,13 +525,13 @@ namespace RemotePatientCare.DAL.Migrations
                     b.HasOne("RemotePatientCare.DAL.Models.Hospital", "Hospital")
                         .WithMany("Administrators")
                         .HasForeignKey("HospitalId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RemotePatientCare.DAL.Models.User", "User")
                         .WithOne("HospitalAdministrator")
                         .HasForeignKey("RemotePatientCare.DAL.Models.HospitalAdministrator", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Hospital");
@@ -561,24 +543,22 @@ namespace RemotePatientCare.DAL.Migrations
                 {
                     b.HasOne("RemotePatientCare.DAL.Models.CaregiverPatient", "CaregiverPatient")
                         .WithMany("Patients")
-                        .HasForeignKey("CaregiverPatientId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("CaregiverPatientId");
 
                     b.HasOne("RemotePatientCare.DAL.Models.Doctor", "Doctor")
                         .WithMany("Patients")
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("DoctorId");
 
                     b.HasOne("RemotePatientCare.DAL.Models.Hospital", "Hospital")
                         .WithMany("Patients")
                         .HasForeignKey("HospitalId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RemotePatientCare.DAL.Models.User", "User")
                         .WithOne("Patient")
                         .HasForeignKey("RemotePatientCare.DAL.Models.Patient", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("CaregiverPatient");
@@ -588,30 +568,6 @@ namespace RemotePatientCare.DAL.Migrations
                     b.Navigation("Hospital");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("RemotePatientCare.DAL.Identity.ApplicationUserRole", b =>
-                {
-                    b.HasOne("RemotePatientCare.DAL.Identity.ApplicationRole", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RemotePatientCare.DAL.Identity.ApplicationUser", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("RemotePatientCare.DAL.Identity.ApplicationUser", b =>
-                {
-                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("RemotePatientCare.DAL.Models.CaregiverPatient", b =>
@@ -642,11 +598,6 @@ namespace RemotePatientCare.DAL.Migrations
                     b.Navigation("HospitalAdministrator");
 
                     b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("RemotePatientCare.DAL.Identity.ApplicationRole", b =>
-                {
-                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemotePatientCare.BLL", "Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemotePatientCare.DAL", "RemotePatientCare.DAL\RemotePatientCare.DAL.csproj", "{1E43D5EE-20B2-4697-88CE-351B3E524A5D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemotePatientCare.Utility", "RemotePatientCare.Utility\RemotePatientCare.Utility.csproj", "{3EF2B050-1FB6-47BF-9819-3C41E9529334}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{1E43D5EE-20B2-4697-88CE-351B3E524A5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E43D5EE-20B2-4697-88CE-351B3E524A5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E43D5EE-20B2-4697-88CE-351B3E524A5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EF2B050-1FB6-47BF-9819-3C41E9529334}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EF2B050-1FB6-47BF-9819-3C41E9529334}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EF2B050-1FB6-47BF-9819-3C41E9529334}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EF2B050-1FB6-47BF-9819-3C41E9529334}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
