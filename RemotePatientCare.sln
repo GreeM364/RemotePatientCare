@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemotePatientCare.API", "RemotePatientCare\RemotePatientCare.API.csproj", "{3A9447A3-24FB-4367-A514-85E45D46A012}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemotePatientCare.BL", "RemotePatientCare.BL\RemotePatientCare.BL.csproj", "{4AF336F9-4C2B-4F98-9382-F9AF128EE451}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemotePatientCare.BLL", "RemotePatientCare.BL\RemotePatientCare.BLL.csproj", "{4AF336F9-4C2B-4F98-9382-F9AF128EE451}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemotePatientCare.DAL", "RemotePatientCare.DAL\RemotePatientCare.DAL.csproj", "{1E43D5EE-20B2-4697-88CE-351B3E524A5D}"
 EndProject

@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RemotePatientCare.DAL\RemotePatientCare.DAL.csproj" />
+  </ItemGroup>
+
 </Project>
