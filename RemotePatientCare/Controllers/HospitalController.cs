@@ -194,5 +194,30 @@ namespace RemotePatientCare.API.Controllers
                 return NotFound(_response);
             }
         }
+
+        [HttpGet("{id}/administrators")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<APIResponse>> GetHospitalAdministrators(string id)
+        {
+            try
+            {
+                var doctors = await _hospitalService.GetAdministratorsAsync(id);
+
+                _response.Result = _mapper.Map<List<HospitalAdministratorViewModel>>(doctors);
+                _response.StatusCode = HttpStatusCode.OK;
+
+                return Ok(_response);
+
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.NotFound;
+                _response.ErrorMessages = new List<string> { ex.ToString() };
+
+                return NotFound(_response);
+            }
+        }
     }
 }
