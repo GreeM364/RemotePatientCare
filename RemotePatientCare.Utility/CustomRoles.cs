@@ -2,6 +2,7 @@
 {
     public static class CustomRoles
     {
+        public const string GlobalAdmin = "GlobalAdmin";
         public const string User = "User";
         public const string Doctor = "Doctor";
         public const string Patient = "Patient";

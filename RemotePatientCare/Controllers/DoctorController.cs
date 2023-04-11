@@ -1,36 +1,37 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RemotePatientCare.BLL.Services.Interfaces;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using RemotePatientCare.API.Models;
-using System.Net;
-using AutoMapper;
 using RemotePatientCare.BLL.DataTransferObjects;
+using RemotePatientCare.BLL.Services;
+using RemotePatientCare.BLL.Services.Interfaces;
+using System.Net;
 
 namespace RemotePatientCare.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HospitalController : ControllerBase
+    public class DoctorController : ControllerBase
     {
-        private readonly IHospitalService _hospitalService;
+        private readonly IDoctorService _doctorService;
         protected APIResponse _response;
         private readonly IMapper _mapper;
 
-        public HospitalController(IHospitalService hospitalService, IMapper mapper)
+        public DoctorController(IDoctorService doctorService, IMapper mapper)
         {
-            _hospitalService = hospitalService;
+            _doctorService = doctorService;
             _mapper = mapper;
             _response = new APIResponse();
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetHospitals()
+        public async Task<ActionResult<APIResponse>> GetDoctors()
         {
             try
             {
-                var hospital = await _hospitalService.GetAsync();
+                var doctor = await _doctorService.GetAsync();
 
-                _response.Result = _mapper.Map<List<HospitalViewModel>>(hospital);
+                _response.Result = _mapper.Map<List<DoctorViewModel>>(doctor);
                 _response.StatusCode = HttpStatusCode.OK;
 
                 return Ok(_response);
@@ -48,13 +49,13 @@ namespace RemotePatientCare.API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<APIResponse>> GetHospitalById(string id)
+        public async Task<ActionResult<APIResponse>> GetDoctorById(string id)
         {
             try
             {
-                var hospital = await _hospitalService.GetByIdAsync(id);
+                var doctor = await _doctorService.GetByIdAsync(id);
 
-                _response.Result = _mapper.Map<HospitalViewModel>(hospital);
+                _response.Result = _mapper.Map<DoctorViewModel>(doctor);
                 _response.StatusCode = HttpStatusCode.OK;
 
                 return Ok(_response);
@@ -73,14 +74,14 @@ namespace RemotePatientCare.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<APIResponse>> Post([FromBody] HospitalCreateViewModel request)
+        public async Task<ActionResult<APIResponse>> Post([FromBody] DoctorCreateViewModel request)
         {
             try
             {
-                var hospitalDTO = _mapper.Map<HospitalCreateDTO>(request);
-                var hospital = await _hospitalService.CreateAsync(hospitalDTO);
+                var doctorDTO = _mapper.Map<DoctorCreateDTO>(request);
+                var doctor = await _doctorService.CreateAsync(doctorDTO);
 
-                _response.Result = _mapper.Map<HospitalViewModel>(hospital);
+                _response.Result = _mapper.Map<DoctorViewModel>(doctor);
                 _response.StatusCode = HttpStatusCode.Created;
 
                 return StatusCode(StatusCodes.Status201Created, _response);
@@ -97,16 +98,14 @@ namespace RemotePatientCare.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<APIResponse>> Put(string id, [FromBody] HospitalUpdateViewModel request)
+        public async Task<ActionResult<APIResponse>> Put(string id, [FromBody] DoctorUpdateViewModel request)
         {
             try
             {
-                var hospitalDTO = _mapper.Map<HospitalUpdateDTO>(request);
-                var hospital = await _hospitalService.UpdateAsync(id, hospitalDTO);
+                var doctorDTO = _mapper.Map<DoctorUpdateDTO>(request);
+                var hospital = await _doctorService.UpdateAsync(id, doctorDTO);
 
-                _response.Result = _mapper.Map<HospitalViewModel>(hospital);
+                _response.Result = _mapper.Map<DoctorUpdateViewModel>(hospital);
                 _response.StatusCode = HttpStatusCode.OK;
 
                 return Ok(_response);
@@ -129,34 +128,9 @@ namespace RemotePatientCare.API.Controllers
         {
             try
             {
-                await _hospitalService.DeleteAsync(id); 
+                await _doctorService.DeleteAsync(id);
 
                 _response.StatusCode = HttpStatusCode.NoContent;
-                return Ok(_response);
-
-            }
-            catch (Exception ex)
-            {
-                _response.IsSuccess = false;
-                _response.StatusCode = HttpStatusCode.NotFound;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
-
-                return NotFound(_response);
-            }
-        }
-
-        [HttpGet("{id}/doctors")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<APIResponse>> GetHospitalDoctors(string id)
-        {
-            try
-            {
-                var doctors = await _hospitalService.GetDoctorsAsync(id);
-
-                _response.Result = _mapper.Map<List<DoctorViewModel>>(doctors);
-                _response.StatusCode = HttpStatusCode.OK;
-
                 return Ok(_response);
 
             }

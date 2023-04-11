@@ -13,6 +13,7 @@ namespace RemotePatientCare.BLL.Infrastructure
             services.AddAutoMapper(typeof(AutomapperBLLProfile));
 
             services.AddScoped<IHospitalService, HospitalService>();
+            services.AddScoped<IDoctorService, DoctorService>();
 
             return services;
         }

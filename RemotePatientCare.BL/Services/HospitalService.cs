@@ -2,6 +2,7 @@
 using RemotePatientCare.BLL.DataTransferObjects;
 using RemotePatientCare.BLL.Services.Interfaces;
 using RemotePatientCare.DAL.Models;
+using RemotePatientCare.DAL.Repository;
 using RemotePatientCare.DAL.Repository.IRepository;
 
 namespace RemotePatientCare.BLL.Services
@@ -9,18 +10,14 @@ namespace RemotePatientCare.BLL.Services
     public class HospitalService : IHospitalService
     {
         private readonly IHospitalRepository _hospitalRepository;
+        private readonly IDoctorRepository _doctorRepository;
         private readonly IMapper _mapper;
 
-        public HospitalService(IHospitalRepository hospitalRepository, IMapper mapper)
+        public HospitalService(IHospitalRepository hospitalRepository, IDoctorRepository doctorRepository, IMapper mapper)
         {
             _hospitalRepository = hospitalRepository;
+            _doctorRepository = doctorRepository;
             _mapper = mapper;
-
-        }
-        public async Task<List<HospitalDTO>> GetAsync()
-        {
-            var source = await _hospitalRepository.GetAllAsync();
-            return _mapper.Map<List<HospitalDTO>>(source); ;
         }
 
         public async Task<HospitalDTO> GetByIdAsync(string id)
@@ -34,6 +31,13 @@ namespace RemotePatientCare.BLL.Services
 
             return _mapper.Map<HospitalDTO>(source);
         }
+
+        public async Task<List<HospitalDTO>> GetAsync()
+        {
+            var source = await _hospitalRepository.GetAllAsync();
+            return _mapper.Map<List<HospitalDTO>>(source); 
+        }
+
         public async Task<HospitalDTO> CreateAsync(HospitalCreateDTO request)
         {
             var existing = await _hospitalRepository.GetAsync(x => x.Name == request.Name);
@@ -59,6 +63,9 @@ namespace RemotePatientCare.BLL.Services
             if (request == null)
                 throw new Exception("The received model of Hospital is null");
 
+            if (await _hospitalRepository.GetAsync(x => x.Id == id) != null)
+                throw new Exception($"Hospital with id \"{id}\" not found");
+
             if (await _hospitalRepository.GetAsync(x => x.Name == request.Name && x.Id != id) != null)
                 throw new Exception("Hospital with such name already exists");
 
@@ -74,12 +81,24 @@ namespace RemotePatientCare.BLL.Services
 
         public async Task DeleteAsync(string id)
         {
-            var hospital = await _hospitalRepository.GetAsync(v => v.Id == id);
+            var hospital = await _hospitalRepository.GetAsync(x => x.Id == id);
 
             if (hospital == null)
                 throw new Exception($"Hospital with such id {id} not found for deletion");
 
             await _hospitalRepository.RemoveAsync(hospital);
+        }
+
+        public async Task<List<DoctorDTO>> GetDoctorsAsync(string id)
+        {
+            if (await _hospitalRepository.GetAsync(x => x.Id == id) == null)
+                throw new Exception($"Hospital with such id {id} not found");
+
+            var source = await _doctorRepository.GetAllAsync(x => x.HospitalId == id, includeProperties: "User", 
+                                                             isTracking: false);
+
+            var doctors = _mapper.Map<List<DoctorDTO>>(source);
+            return doctors;
         }
     }
 }

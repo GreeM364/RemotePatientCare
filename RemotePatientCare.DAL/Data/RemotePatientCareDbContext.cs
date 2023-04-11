@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RemotePatientCare.DAL.Models;
-using Microsoft.AspNetCore.Identity;
 
 namespace RemotePatientCare.DAL.Data
 {
@@ -16,6 +15,8 @@ namespace RemotePatientCare.DAL.Data
         public DbSet<Hospital> Hospitals { get; set; }
         public DbSet<HospitalAdministrator> HospitalAdministrators { get; set; }
         public DbSet<CaregiverPatient> CaregiverPatients { get; set; }
+        public DbSet<ApplicationRole> Roles { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

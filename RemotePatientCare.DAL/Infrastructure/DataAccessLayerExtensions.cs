@@ -22,10 +22,14 @@ namespace RemotePatientCare.DAL.Infrastructure
             services.AddScoped<IHospitalRepository, HospitalRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                     .AddEntityFrameworkStores<RemotePatientCareDbContext>()
                     .AddDefaultTokenProviders();
 
+            services.AddTransient<IdentityInitializer>();
+            services.BuildServiceProvider().GetService<IdentityInitializer>().InitializeRolesAsync();
+
+            services.AddScoped<RoleManager<ApplicationRole>>();
 
             return services;
         }
