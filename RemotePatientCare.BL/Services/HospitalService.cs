@@ -11,12 +11,15 @@ namespace RemotePatientCare.BLL.Services
     {
         private readonly IHospitalRepository _hospitalRepository;
         private readonly IDoctorRepository _doctorRepository;
+        private readonly IPatientRepository _patientRepository;
         private readonly IMapper _mapper;
 
-        public HospitalService(IHospitalRepository hospitalRepository, IDoctorRepository doctorRepository, IMapper mapper)
+        public HospitalService(IHospitalRepository hospitalRepository, IDoctorRepository doctorRepository,
+                               IPatientRepository patientRepository, IMapper mapper)
         {
             _hospitalRepository = hospitalRepository;
             _doctorRepository = doctorRepository;
+            _patientRepository = patientRepository;
             _mapper = mapper;
         }
 
@@ -99,6 +102,18 @@ namespace RemotePatientCare.BLL.Services
 
             var doctors = _mapper.Map<List<DoctorDTO>>(source);
             return doctors;
+        }
+
+        public async Task<List<PatientDTO>> GetPatientsAsync(string id)
+        {
+            if (await _hospitalRepository.GetAsync(x => x.Id == id) == null )
+                throw new Exception($"Hospital with such id {id} not found");
+
+            var source = await _patientRepository.GetAllAsync(x => x.HospitalId == id, includeProperties: "User",
+                                                              isTracking: false);
+
+            var result = _mapper.Map<List<PatientDTO>>(source);
+            return result;
         }
     }
 }

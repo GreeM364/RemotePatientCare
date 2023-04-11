@@ -10,5 +10,7 @@ namespace RemotePatientCare.BLL.Services.Interfaces
         public Task<HospitalDTO> UpdateAsync(string id, HospitalUpdateDTO request);
         public Task DeleteAsync(string id);
         public Task<List<DoctorDTO>> GetDoctorsAsync(string id);
+        public Task<List<PatientDTO>> GetPatientsAsync(string id);
     }
 }
+

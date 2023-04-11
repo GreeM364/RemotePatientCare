@@ -9,5 +9,6 @@ namespace RemotePatientCare.BLL.Services.Interfaces
         Task<DoctorDTO> CreateAsync(DoctorCreateDTO request);
         Task<DoctorDTO> UpdateAsync(string id, DoctorUpdateDTO request);
         Task DeleteAsync(string id);
+        Task<List<PatientDTO>> GetPatientsAsync(string id);
     }
 }

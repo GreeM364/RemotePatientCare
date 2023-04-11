@@ -10,12 +10,15 @@ namespace RemotePatientCare.BLL.Services
     {
         private readonly IDoctorRepository _doctorRepository;
         private readonly IHospitalRepository _hospitalRepository;
+        private readonly IPatientRepository _petientRepository;
         private readonly IMapper _mapper;
 
-        public DoctorService(IDoctorRepository doctorRepository, IHospitalRepository hospitalRepository, IMapper mapper)
+        public DoctorService(IDoctorRepository doctorRepository, IHospitalRepository hospitalRepository,
+                             IPatientRepository petientRepository, IMapper mapper)
         {
             _doctorRepository = doctorRepository;
             _hospitalRepository = hospitalRepository;
+            _petientRepository = petientRepository;
             _mapper = mapper;
         }
 
@@ -43,8 +46,8 @@ namespace RemotePatientCare.BLL.Services
                 throw new Exception($"Hospital with id {request.HospitalId} doesn't exist");
 
             var existing = await _doctorRepository.GetAsync(x => x.User.FirstName == request.FirstName
-                                                                       && x.User.LastName == request.LastName
-                                                                       && x.User.Phone == request.Phone);
+                                                                  && x.User.LastName == request.LastName
+                                                                  && x.User.Phone == request.Phone);
 
             if (existing != null)
                 throw new Exception("Doctor with such parameters already exists");
@@ -62,7 +65,7 @@ namespace RemotePatientCare.BLL.Services
                 throw new Exception("The received model of Doctor is null");
 
             if (await _doctorRepository.GetAsync(x => x.Id == id) != null)
-                throw new Exception($"Doctor with id \"{id}\" not found");
+                throw new Exception($"Doctor with id {id} not found");
 
 
             var updateEntity = _mapper.Map<Doctor>(request);
@@ -80,6 +83,18 @@ namespace RemotePatientCare.BLL.Services
                 throw new Exception($"Doctor with such id {id} not found for deletion");
 
             await _doctorRepository.RemoveAsync(doctor);
+        }
+
+        public async Task<List<PatientDTO>> GetPatientsAsync(string id)
+        {
+            if (await _doctorRepository.GetAsync(x => x.Id == id) == null)
+                throw new Exception($"Doctor with such id {id} not found");
+
+            var source = await _petientRepository.GetAllAsync(x => x.DoctorId == id, includeProperties: "User",
+                                                           isTracking: false);
+
+            var result = _mapper.Map<List<PatientDTO>>(source);
+            return result;
         }
     }
 }

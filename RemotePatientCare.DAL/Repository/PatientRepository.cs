@@ -42,7 +42,7 @@ namespace RemotePatientCare.DAL.Repository
             }
             else
             {
-                throw new Exception("Error while creating caregiver patient account"); // TODO: probably create IdentityException
+                throw new Exception("Error while creating patient account"); // TODO: probably create IdentityException
             }
 
             await _db.SaveChangesAsync();
