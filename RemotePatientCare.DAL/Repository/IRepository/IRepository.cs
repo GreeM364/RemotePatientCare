@@ -9,6 +9,7 @@ namespace RemotePatientCare.DAL.Repository.IRepository
                                   bool isTracking = true);
         Task<T> GetAsync(Expression<Func<T, bool>>? filter = null, string includeProperties = null, bool isTracking = true);
 
+        Task<T> GetByIdAsync(string id);
         Task RemoveAsync(T entity);
         Task RemoveRange(IEnumerable<T> entity);
         Task SaveAsync();

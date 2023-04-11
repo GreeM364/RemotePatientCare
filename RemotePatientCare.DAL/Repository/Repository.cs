@@ -64,6 +64,11 @@ namespace RemotePatientCare.DAL.Repository
             return query.ToList();
         }
 
+        public virtual Task<T> GetByIdAsync(string id)
+        {
+            return dbSet.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task RemoveAsync(T entity)
         {
             dbSet.Remove(entity);
