@@ -23,12 +23,12 @@ namespace RemotePatientCare.DAL.Infrastructure
         }
         public async Task<string> GenerateJwtToken(IConfiguration configuration, ApplicationUser requestUser)
         {
-            var user1 = await _userManager.FindByEmailAsync(requestUser.Email!);
+            var user = await _userManager.FindByEmailAsync(requestUser.Email!);
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(configuration["Secret"]);
 
-            var claims = await GetClaimsAsync(user1!);
+            var claims = await GetClaimsAsync(user!);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

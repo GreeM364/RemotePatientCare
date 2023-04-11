@@ -1,15 +1,20 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using RemotePatientCare.BLL.Services.Interfaces;
+using RemotePatientCare.BLL.Services;
 using RemotePatientCare.DAL.Infrastructure;
 
 namespace RemotePatientCare.BLL.Infrastructure
 {
     public static class BusinessLogicLayerExtensions
     {
-        public static IServiceCollection AddBusinessLogicLayer(this IServiceCollection service, string connectionString)
+        public static IServiceCollection AddBusinessLogicLayer(this IServiceCollection services, string connectionString)
         {
-            service.AddDataAccessLayer(connectionString);
+            services.AddDataAccessLayer(connectionString);
+            services.AddAutoMapper(typeof(AutomapperBLLProfile));
 
-            return service;
+            services.AddScoped<IHospitalService, HospitalService>();
+
+            return services;
         }
     }
 }
