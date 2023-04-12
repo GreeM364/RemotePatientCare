@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using RemotePatientCare.BLL.DataTransferObjects;
+using RemotePatientCare.BLL.Exceptions;
 using RemotePatientCare.BLL.Services.Interfaces;
 using RemotePatientCare.DAL.Models;
-using RemotePatientCare.DAL.Repository;
 using RemotePatientCare.DAL.Repository.IRepository;
-using System.ComponentModel.DataAnnotations;
 
 namespace RemotePatientCare.BLL.Services
 {
@@ -28,7 +27,7 @@ namespace RemotePatientCare.BLL.Services
 
             if (source == null)
             {
-                throw new Exception($"PatientCaretaker with id {id} not found");
+                throw new NotFoundException($"PatientCaretaker with id {id} not found");
             }
 
             return _mapper.Map<CaregiverPatientDTO>(source);
@@ -47,7 +46,7 @@ namespace RemotePatientCare.BLL.Services
                                                                                 && x.User.Phone == request.Phone);
 
             if (existing != null)
-                throw new ValidationException("Caregiver Patient with such parameters already exists");
+                throw new BadRequestException("Caregiver Patient with such parameters already exists");
 
             var createEntity = _mapper.Map<CaregiverPatient>(request);
             await _caregiverPatientRepository.CreateAsync(createEntity, request.Password);
@@ -61,10 +60,10 @@ namespace RemotePatientCare.BLL.Services
             var updateEntity = await _caregiverPatientRepository.GetByIdAsync(id);
 
             if (request == null)
-                throw new Exception("The received model of Caregiver Patient is null");
+                throw new BadRequestException("The received model of Caregiver Patient is null");
 
             if (updateEntity == null)
-                throw new Exception($"Caregiver Patient with id {id} not found");
+                throw new NotFoundException($"Caregiver Patient with id {id} not found");
 
 
             _mapper.Map(request, updateEntity);
@@ -79,7 +78,7 @@ namespace RemotePatientCare.BLL.Services
             var caregiverPatient = await _caregiverPatientRepository.GetAsync(x => x.Id == id);
 
             if (caregiverPatient == null)
-                throw new Exception($"Caregiver Patient with such id {id} not found for deletion");
+                throw new NotFoundException($"Caregiver Patient with such id {id} not found for deletion");
 
             await _caregiverPatientRepository.RemoveAsync(caregiverPatient);
         }
@@ -87,7 +86,7 @@ namespace RemotePatientCare.BLL.Services
         public async Task<List<PatientDTO>> GetPatientsAsync(string id)
         {
             if (await _caregiverPatientRepository.GetAsync(x => x.Id == id) == null)
-                throw new Exception($"Caregiver Patient with such id {id} not found");
+                throw new NotFoundException($"Caregiver Patient with such id {id} not found");
 
             var source = await _petientRepository.GetAllAsync(x => x.CaregiverPatientId == id, includeProperties: "User",
                                                               isTracking: false);

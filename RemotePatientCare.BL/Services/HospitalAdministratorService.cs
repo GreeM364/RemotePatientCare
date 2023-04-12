@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using RemotePatientCare.BLL.DataTransferObjects;
+using RemotePatientCare.BLL.Exceptions;
 using RemotePatientCare.BLL.Services.Interfaces;
 using RemotePatientCare.DAL.Models;
-using RemotePatientCare.DAL.Repository;
 using RemotePatientCare.DAL.Repository.IRepository;
-using System.ComponentModel.DataAnnotations;
 
 namespace RemotePatientCare.BLL.Services
 {
@@ -29,7 +28,7 @@ namespace RemotePatientCare.BLL.Services
 
             if (source == null)
             {
-                throw new Exception($"Hospital Administrator with id {id} not found");
+                throw new NotFoundException($"Hospital Administrator with id {id} not found");
             }
 
             return _mapper.Map<HospitalAdministratorDTO>(source);
@@ -44,14 +43,14 @@ namespace RemotePatientCare.BLL.Services
         public async Task<HospitalAdministratorDTO> CreateAsync(HospitalAdministratorCreateDTO request)
         {
             if (await _hospitalRepository.GetAsync(x => x.Id == request.HospitalId) == null)
-                throw new ValidationException($"Hospital with id {request.HospitalId} doesn't exist");
+                throw new BadRequestException($"Hospital with id {request.HospitalId} doesn't exist");
 
             var existing = await _hospitalAdministratorRepository.GetAsync(x => x.User.FirstName == request.FirstName
                                                                                 && x.User.LastName == request.LastName
                                                                                 && x.User.Phone == request.Phone);
 
             if (existing != null)
-                throw new ValidationException("HospitalAdministrator with such parameters already exists");
+                throw new BadRequestException("HospitalAdministrator with such parameters already exists");
 
             var createEntity = _mapper.Map<HospitalAdministrator>(request);
             await _hospitalAdministratorRepository.CreateAsync(createEntity, request.Password);
@@ -65,10 +64,10 @@ namespace RemotePatientCare.BLL.Services
             var updateEntity = await _hospitalAdministratorRepository.GetByIdAsync(id);
 
             if (request == null)
-                throw new Exception("The received model of Hospital Administrator is null");
+                throw new BadRequestException("The received model of Hospital Administrator is null");
 
             if (updateEntity == null)
-                throw new Exception($"Hospital Administrator with id {id} not found");
+                throw new NotFoundException($"Hospital Administrator with id {id} not found");
 
 
             _mapper.Map(request, updateEntity);
@@ -83,7 +82,7 @@ namespace RemotePatientCare.BLL.Services
             var hospitalAdministrator = await _hospitalAdministratorRepository.GetAsync(x => x.Id == id);
 
             if (hospitalAdministrator == null)
-                throw new Exception($"Hospital Administrator with such id {id} not found for deletion");
+                throw new NotFoundException($"Hospital Administrator with such id {id} not found for deletion");
 
             await _hospitalAdministratorRepository.RemoveAsync(hospitalAdministrator);
         }
