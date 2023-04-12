@@ -27,6 +27,9 @@ namespace RemotePatientCare.API
             CreateMap<CaregiverPatientDTO, CaregiverPatientViewModel>().ReverseMap();
             CreateMap<CaregiverPatientCreateDTO, CaregiverPatientCreateViewModel>().ReverseMap();
             CreateMap<CaregiverPatientUpdateDTO, CaregiverPatientUpdateViewModel>().ReverseMap();
+
+            CreateMap<LoginRequestDTO, LoginRequestViewModel>().ReverseMap();
+            CreateMap<LoginResultDTO, LoginResultViewModel>().ReverseMap();
         }
     }
 }

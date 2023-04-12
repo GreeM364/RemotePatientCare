@@ -1,8 +1,9 @@
-﻿using System.Linq.Expressions;
+﻿using RemotePatientCare.DAL.Models;
+using System.Linq.Expressions;
 
 namespace RemotePatientCare.DAL.Repository.IRepository
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T> where T : BaseModel
     {
         Task<List<T>> GetAllAsync(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, 
                                   IOrderedQueryable<T>>? orderBy = null, string includeProperties = null, 

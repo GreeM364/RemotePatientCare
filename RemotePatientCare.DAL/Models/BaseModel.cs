@@ -1,5 +1,4 @@
-﻿
-namespace RemotePatientCare.DAL.Models
+﻿namespace RemotePatientCare.DAL.Models
 {
     public abstract class BaseModel
     {

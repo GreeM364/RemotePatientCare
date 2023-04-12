@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using RemotePatientCare.DAL.Identity;
-using RemotePatientCare.DAL.Models;
 using RemotePatientCare.DAL.Repository.IRepository;
 using RemotePatientCare.Utility;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,19 +13,21 @@ namespace RemotePatientCare.DAL.Infrastructure
     public class JwtHandler
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IRepository<User> _userRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IConfiguration _configuration;
 
-        public JwtHandler(UserManager<ApplicationUser> userManager, IRepository<User> userRepository)
+        public JwtHandler(UserManager<ApplicationUser> userManager, IConfiguration configuration, IUserRepository userRepository)
         {
             _userManager = userManager;
             _userRepository = userRepository;
+            _configuration = configuration;
         }
-        public async Task<string> GenerateJwtToken(IConfiguration configuration, ApplicationUser requestUser)
+        public async Task<string> GenerateJwtToken(ApplicationUser requestUser)
         {
             var user = await _userManager.FindByEmailAsync(requestUser.Email!);
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(configuration["Secret"]);
+            var key = _configuration.GetValue<string>("JwtSettings:Secret"); 
 
             var claims = await GetClaimsAsync(user!);
 
@@ -34,7 +35,7 @@ namespace RemotePatientCare.DAL.Infrastructure
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)), SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
