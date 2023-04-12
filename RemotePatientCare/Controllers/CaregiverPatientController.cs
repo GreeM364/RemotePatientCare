@@ -106,7 +106,7 @@ namespace RemotePatientCare.API.Controllers
                 var caregiverPatientDTO = _mapper.Map<CaregiverPatientUpdateDTO>(request);
                 var caregiverPatient = await _caregiverPatientService.UpdateAsync(id, caregiverPatientDTO);
 
-                _response.Result = _mapper.Map<CaregiverPatientUpdateViewModel>(caregiverPatient);
+                _response.Result = _mapper.Map<CaregiverPatientViewModel>(caregiverPatient);
                 _response.StatusCode = HttpStatusCode.OK;
 
                 return Ok(_response);

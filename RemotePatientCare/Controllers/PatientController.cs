@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using RemotePatientCare.API.Models;
 using RemotePatientCare.BLL.DataTransferObjects;
-using RemotePatientCare.BLL.Services;
 using RemotePatientCare.BLL.Services.Interfaces;
 using System.Net;
 
@@ -107,7 +106,7 @@ namespace RemotePatientCare.API.Controllers
                 var patientDTO = _mapper.Map<PatientUpdateDTO>(request);
                 var patient = await _patientService.UpdateAsync(id, patientDTO);
 
-                _response.Result = _mapper.Map<PatientUpdateViewModel>(patient);
+                _response.Result = _mapper.Map<PatientViewModel>(patient);
                 _response.StatusCode = HttpStatusCode.OK;
 
                 return Ok(_response);

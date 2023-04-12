@@ -2,7 +2,6 @@
 using RemotePatientCare.BLL.DataTransferObjects;
 using RemotePatientCare.BLL.Services.Interfaces;
 using RemotePatientCare.DAL.Models;
-using RemotePatientCare.DAL.Repository;
 using RemotePatientCare.DAL.Repository.IRepository;
 
 namespace RemotePatientCare.BLL.Services
@@ -66,11 +65,13 @@ namespace RemotePatientCare.BLL.Services
 
         public async Task<HospitalDTO> UpdateAsync(string id, HospitalUpdateDTO request)
         {
+            var updateEntity = await _hospitalRepository.GetByIdAsync(id);
+
             if (request == null)
                 throw new Exception("The received model of Hospital is null");
 
-            if (await _hospitalRepository.GetAsync(x => x.Id == id) != null)
-                throw new Exception($"Hospital with id \"{id}\" not found");
+            if (updateEntity == null)
+                throw new Exception($"Hospital with id {id} not found");
 
             if (await _hospitalRepository.GetAsync(x => x.Name == request.Name && x.Id != id) != null)
                 throw new Exception("Hospital with such name already exists");
@@ -78,7 +79,7 @@ namespace RemotePatientCare.BLL.Services
             if (await _hospitalRepository.GetAsync(x => x.Address == request.Address && x.Id != id) != null)
                 throw new Exception("Hospital with such address already exists");
 
-            var updateEntity = _mapper.Map<Hospital>(request);
+            _mapper.Map(request, updateEntity);
             await _hospitalRepository.UpdateAsync(updateEntity);
 
             var result = _mapper.Map<HospitalDTO>(updateEntity);

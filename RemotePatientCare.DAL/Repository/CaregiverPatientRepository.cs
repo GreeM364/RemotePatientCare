@@ -53,7 +53,6 @@ namespace RemotePatientCare.DAL.Repository
             //TODO entity.LastModifiedBy
 
             _db.CaregiverPatients.Update(entity);
-            _db.BaseUsers.Update(entity.User);
 
             await _db.SaveChangesAsync();
             return entity;

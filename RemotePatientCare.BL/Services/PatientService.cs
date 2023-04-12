@@ -68,13 +68,15 @@ namespace RemotePatientCare.BLL.Services
 
         public async Task<PatientDTO> UpdateAsync(string id, PatientUpdateDTO request)
         {
+            var updateEntity = await _patientRepository.GetByIdAsync(id);
+
             if (request == null)
                 throw new Exception("The received model of Patient is null");
 
-            if (await _patientRepository.GetAsync(x => x.Id == id) != null)
+            if (updateEntity == null)
                 throw new Exception($"Patient with id {id} not found");
 
-            var updateEntity = _mapper.Map<Patient>(request);
+            _mapper.Map(request, updateEntity);
             await _patientRepository.UpdateAsync(updateEntity);
 
             var result = _mapper.Map<PatientDTO>(updateEntity);

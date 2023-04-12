@@ -61,14 +61,16 @@ namespace RemotePatientCare.BLL.Services
 
         public async Task<DoctorDTO> UpdateAsync(string id, DoctorUpdateDTO request)
         {
+            var updateEntity = await _doctorRepository.GetByIdAsync(id);
+
             if (request == null)
                 throw new Exception("The received model of Doctor is null");
 
-            if (await _doctorRepository.GetAsync(x => x.Id == id) != null)
+            if (updateEntity == null)
                 throw new Exception($"Doctor with id {id} not found");
 
 
-            var updateEntity = _mapper.Map<Doctor>(request);
+            _mapper.Map(request, updateEntity);
             await _doctorRepository.UpdateAsync(updateEntity);
 
             var result = _mapper.Map<DoctorDTO>(updateEntity);
@@ -77,7 +79,7 @@ namespace RemotePatientCare.BLL.Services
 
         public async Task DeleteAsync(string id)
         {
-            var doctor = await _doctorRepository.GetAsync(v => v.Id == id);
+            var doctor = await _doctorRepository.GetAsync(x => x.Id == id);
 
             if (doctor == null)
                 throw new Exception($"Doctor with such id {id} not found for deletion");

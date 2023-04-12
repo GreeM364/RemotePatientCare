@@ -2,6 +2,7 @@
 using RemotePatientCare.BLL.DataTransferObjects;
 using RemotePatientCare.BLL.Services.Interfaces;
 using RemotePatientCare.DAL.Models;
+using RemotePatientCare.DAL.Repository;
 using RemotePatientCare.DAL.Repository.IRepository;
 using System.ComponentModel.DataAnnotations;
 
@@ -61,14 +62,16 @@ namespace RemotePatientCare.BLL.Services
 
         public async Task<HospitalAdministratorDTO> UpdateAsync(string id, HospitalAdministratorUpdateDTO request)
         {
+            var updateEntity = await _hospitalAdministratorRepository.GetByIdAsync(id);
+
             if (request == null)
                 throw new Exception("The received model of Hospital Administrator is null");
 
-            if (await _hospitalAdministratorRepository.GetAsync(x => x.Id == id) != null)
+            if (updateEntity == null)
                 throw new Exception($"Hospital Administrator with id {id} not found");
 
 
-            var updateEntity = _mapper.Map<HospitalAdministrator>(request);
+            _mapper.Map(request, updateEntity);
             await _hospitalAdministratorRepository.UpdateAsync(updateEntity);
 
             var result = _mapper.Map<HospitalAdministratorDTO>(updateEntity);

@@ -106,7 +106,7 @@ namespace RemotePatientCare.API.Controllers
                 var hospitalAdministratorDTO = _mapper.Map<HospitalAdministratorUpdateDTO>(request);
                 var hospitalAdministrator = await _hospitalAdministrator.UpdateAsync(id, hospitalAdministratorDTO);
 
-                _response.Result = _mapper.Map<HospitalAdministratorUpdateViewModel>(hospitalAdministrator);
+                _response.Result = _mapper.Map<HospitalAdministratorViewModel>(hospitalAdministrator);
                 _response.StatusCode = HttpStatusCode.OK;
 
                 return Ok(_response);

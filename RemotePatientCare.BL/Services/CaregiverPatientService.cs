@@ -2,6 +2,7 @@
 using RemotePatientCare.BLL.DataTransferObjects;
 using RemotePatientCare.BLL.Services.Interfaces;
 using RemotePatientCare.DAL.Models;
+using RemotePatientCare.DAL.Repository;
 using RemotePatientCare.DAL.Repository.IRepository;
 using System.ComponentModel.DataAnnotations;
 
@@ -57,14 +58,16 @@ namespace RemotePatientCare.BLL.Services
 
         public async Task<CaregiverPatientDTO> UpdateAsync(string id, CaregiverPatientUpdateDTO request)
         {
+            var updateEntity = await _caregiverPatientRepository.GetByIdAsync(id);
+
             if (request == null)
                 throw new Exception("The received model of Caregiver Patient is null");
 
-            if (await _caregiverPatientRepository.GetAsync(x => x.Id == id) != null)
+            if (updateEntity == null)
                 throw new Exception($"Caregiver Patient with id {id} not found");
 
 
-            var updateEntity = _mapper.Map<CaregiverPatient>(request);
+            _mapper.Map(request, updateEntity);
             await _caregiverPatientRepository.UpdateAsync(updateEntity);
 
             var result = _mapper.Map<CaregiverPatientDTO>(updateEntity);
