@@ -1,5 +1,4 @@
-﻿
-namespace RemotePatientCare.BLL.DataTransferObjects
+﻿namespace RemotePatientCare.BLL.DataTransferObjects
 {
     public class HospitalCreateDTO
     {

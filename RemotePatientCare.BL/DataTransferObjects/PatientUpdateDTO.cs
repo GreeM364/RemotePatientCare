@@ -1,28 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace RemotePatientCare.BLL.DataTransferObjects
+﻿namespace RemotePatientCare.BLL.DataTransferObjects
 {
     public class PatientUpdateDTO
     {
-        [Required] 
         public string HospitalId { get; set; } = null!;
-
-        [Required] 
+        public string? DoctorId { get; set; }
+        public string? CaregiverPatientId { get; set; }
         public string FirstName { get; set; } = null!;
-
-        [Required] 
         public string LastName { get; set; } = null!;
-
-        [Required] 
         public string Patronymic { get; set; } = null!;
-
-        [Required] 
         public string Phone { get; set; } = null!;
-
-        [Required] 
         public string Email { get; set; } = null!;
-
-        [Required] 
         public DateTime BirthDate { get; set; }
     }
 }

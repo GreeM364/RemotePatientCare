@@ -24,5 +24,11 @@ namespace RemotePatientCare.API.Models
 
         [Required] 
         public DateTime BirthDate { get; set; }
+
+        [Required]
+        public DateTime BeginningWorkingDay { get; set; }
+
+        [Required]
+        public DateTime EndWorkingDay { get; set; }
     }
 }

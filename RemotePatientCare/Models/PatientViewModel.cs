@@ -5,6 +5,7 @@
         public string Id { get; set; } = null!;
         public string HospitalId { get; set; } = null!;
         public string? DoctorId { get; set; }
+        public string? CaregiverPatientId { get; set; }
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
         public string Patronymic { get; set; } = null!;

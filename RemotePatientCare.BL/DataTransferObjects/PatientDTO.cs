@@ -2,7 +2,7 @@
 {
     public class PatientDTO
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
         public string HospitalId { get; set; } = null!;
         public string? DoctorId { get; set; }
         public string? CaregiverPatientId { get; set; }

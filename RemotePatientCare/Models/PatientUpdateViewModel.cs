@@ -7,6 +7,10 @@ namespace RemotePatientCare.API.Models
         [Required] 
         public string HospitalId { get; set; } = null!;
 
+        public string? DoctorId { get; set; }
+
+        public string? CaregiverPatientId { get; set; }
+
         [Required] 
         public string FirstName { get; set; } = null!;
 
