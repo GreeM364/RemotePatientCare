@@ -16,6 +16,7 @@ namespace RemotePatientCare.BLL.Infrastructure
             services.AddScoped<IDoctorService, DoctorService>();
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<IHospitalAdministratorService, HospitalAdministratorService>();
+            services.AddScoped<ICaregiverPatientService, CaregiverPatientService>();
 
             return services;
         }

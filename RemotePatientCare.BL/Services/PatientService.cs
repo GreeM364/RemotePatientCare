@@ -90,5 +90,19 @@ namespace RemotePatientCare.BLL.Services
 
             await _patientRepository.RemoveAsync(doctor);
         }
+
+        public async Task<CaregiverPatientDTO> GetPatientCaretakerAsync(string id)
+        {
+            var patient = await _patientRepository.GetByIdAsync(id);
+
+            if (patient == null)
+                throw new Exception($"Patient with id {id} not found");
+
+            if (patient.CaregiverPatient == null)
+                return new CaregiverPatientDTO();
+
+            var result = _mapper.Map<CaregiverPatientDTO>(patient.CaregiverPatient);
+            return result;
+        }
     }
 }

@@ -77,12 +77,12 @@ namespace RemotePatientCare.BLL.Services
 
         public async Task DeleteAsync(string id)
         {
-            var doctor = await _hospitalAdministratorRepository.GetAsync(x => x.Id == id);
+            var hospitalAdministrator = await _hospitalAdministratorRepository.GetAsync(x => x.Id == id);
 
-            if (doctor == null)
+            if (hospitalAdministrator == null)
                 throw new Exception($"Hospital Administrator with such id {id} not found for deletion");
 
-            await _hospitalAdministratorRepository.RemoveAsync(doctor);
+            await _hospitalAdministratorRepository.RemoveAsync(hospitalAdministrator);
         }
     }
 }

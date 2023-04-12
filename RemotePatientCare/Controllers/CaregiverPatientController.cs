@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using RemotePatientCare.API.Models;
 using RemotePatientCare.BLL.DataTransferObjects;
-using RemotePatientCare.BLL.Services;
 using RemotePatientCare.BLL.Services.Interfaces;
 using System.Net;
 
@@ -10,28 +9,28 @@ namespace RemotePatientCare.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PatientController : ControllerBase
+    public class CaregiverPatientController : ControllerBase
     {
-        private readonly IPatientService _patientService;
+        private readonly ICaregiverPatientService _caregiverPatientService;
         protected APIResponse _response;
         private readonly IMapper _mapper;
 
-        public PatientController(IPatientService patientService, IMapper mapper)
+        public CaregiverPatientController(ICaregiverPatientService caregiverPatientService, IMapper mapper)
         {
-            _patientService = patientService;
+            _caregiverPatientService = caregiverPatientService;
             _mapper = mapper;
             _response = new APIResponse();
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetPatients()
+        public async Task<ActionResult<APIResponse>> GetCaregiverPatients()
         {
             try
             {
-                var doctor = await _patientService.GetAsync();
+                var caregiverPatient = await _caregiverPatientService.GetAsync();
 
-                _response.Result = _mapper.Map<List<PatientViewModel>>(doctor);
+                _response.Result = _mapper.Map<List<CaregiverPatientViewModel>>(caregiverPatient);
                 _response.StatusCode = HttpStatusCode.OK;
 
                 return Ok(_response);
@@ -49,13 +48,13 @@ namespace RemotePatientCare.API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<APIResponse>> GetPatientById(string id)
+        public async Task<ActionResult<APIResponse>> GetCaregiverPatientById(string id)
         {
             try
             {
-                var doctor = await _patientService.GetByIdAsync(id);
+                var caregiverPatient = await _caregiverPatientService.GetByIdAsync(id);
 
-                _response.Result = _mapper.Map<PatientViewModel>(doctor);
+                _response.Result = _mapper.Map<CaregiverPatientViewModel>(caregiverPatient);
                 _response.StatusCode = HttpStatusCode.OK;
 
                 return Ok(_response);
@@ -74,14 +73,14 @@ namespace RemotePatientCare.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<APIResponse>> Post([FromBody] PatientCreateViewModel request)
+        public async Task<ActionResult<APIResponse>> Post([FromBody] CaregiverPatientCreateViewModel request)
         {
             try
             {
-                var patientDTO = _mapper.Map<PatientCreateDTO>(request);
-                var patient = await _patientService.CreateAsync(patientDTO);
+                var caregiverPatientDTO = _mapper.Map<CaregiverPatientCreateDTO>(request);
+                var caregiverPatient = await _caregiverPatientService.CreateAsync(caregiverPatientDTO);
 
-                _response.Result = _mapper.Map<PatientViewModel>(patient);
+                _response.Result = _mapper.Map<CaregiverPatientViewModel>(caregiverPatient);
                 _response.StatusCode = HttpStatusCode.Created;
 
                 return StatusCode(StatusCodes.Status201Created, _response);
@@ -100,14 +99,14 @@ namespace RemotePatientCare.API.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<APIResponse>> Put(string id, [FromBody] PatientUpdateViewModel request)
+        public async Task<ActionResult<APIResponse>> Put(string id, [FromBody] CaregiverPatientUpdateViewModel request)
         {
             try
             {
-                var patientDTO = _mapper.Map<PatientUpdateDTO>(request);
-                var patient = await _patientService.UpdateAsync(id, patientDTO);
+                var caregiverPatientDTO = _mapper.Map<CaregiverPatientUpdateDTO>(request);
+                var caregiverPatient = await _caregiverPatientService.UpdateAsync(id, caregiverPatientDTO);
 
-                _response.Result = _mapper.Map<PatientUpdateViewModel>(patient);
+                _response.Result = _mapper.Map<CaregiverPatientUpdateViewModel>(caregiverPatient);
                 _response.StatusCode = HttpStatusCode.OK;
 
                 return Ok(_response);
@@ -130,7 +129,7 @@ namespace RemotePatientCare.API.Controllers
         {
             try
             {
-                await _patientService.DeleteAsync(id);
+                await _caregiverPatientService.DeleteAsync(id);
 
                 _response.StatusCode = HttpStatusCode.NoContent;
                 return Ok(_response);
@@ -146,16 +145,16 @@ namespace RemotePatientCare.API.Controllers
             }
         }
 
-        [HttpGet("{id}/caretaker")]
+        [HttpGet("{id}/patients")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<APIResponse>> GetPatientCaretaker(string id)
+        public async Task<ActionResult<APIResponse>> GetPatients(string id)
         {
             try
             {
-                var patientCaretaker = await _patientService.GetPatientCaretakerAsync(id);
+                var doctors = await _caregiverPatientService.GetPatientsAsync(id);
 
-                _response.Result = _mapper.Map<PatientViewModel>(patientCaretaker);
+                _response.Result = _mapper.Map<List<PatientViewModel>>(doctors);
                 _response.StatusCode = HttpStatusCode.OK;
 
                 return Ok(_response);

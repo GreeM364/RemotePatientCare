@@ -1,11 +1,8 @@
-﻿namespace RemotePatientCare.BLL.DataTransferObjects
+﻿namespace RemotePatientCare.API.Models
 {
-    public class PatientDTO
+    public class CaregiverPatientViewModel
     {
-        public string Id { get; set; }
-        public string HospitalId { get; set; } = null!;
-        public string? DoctorId { get; set; }
-        public string? CaregiverPatientId { get; set; }
+        public string Id { get; set; } = null!;
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
         public string Patronymic { get; set; } = null!;
