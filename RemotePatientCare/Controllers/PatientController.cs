@@ -190,9 +190,9 @@ namespace RemotePatientCare.API.Controllers
         {
             try
             {
-                var patientCaretaker = await _patientService.GetPatientCaretakerAsync(id);
+                var caregiverPatient = await _patientService.GetPatientCaretakerAsync(id);
 
-                _response.Result = _mapper.Map<PatientViewModel>(patientCaretaker);
+                _response.Result = _mapper.Map<CaregiverPatientViewModel>(caregiverPatient);
                 _response.StatusCode = HttpStatusCode.OK;
 
                 return Ok(_response);
@@ -209,7 +209,7 @@ namespace RemotePatientCare.API.Controllers
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = new List<string> { ex.Message };
 
                 return _response;
             }

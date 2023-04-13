@@ -3,6 +3,7 @@ using RemotePatientCare.BLL.DataTransferObjects;
 using RemotePatientCare.BLL.Exceptions;
 using RemotePatientCare.BLL.Services.Interfaces;
 using RemotePatientCare.DAL.Models;
+using RemotePatientCare.DAL.Repository;
 using RemotePatientCare.DAL.Repository.IRepository;
 
 namespace RemotePatientCare.BLL.Services
@@ -12,14 +13,17 @@ namespace RemotePatientCare.BLL.Services
         private readonly IPatientRepository _patientRepository;
         private readonly IHospitalRepository _hospitalRepository;
         private readonly IDoctorRepository _doctorRepository;
+        private readonly ICaregiverPatientRepository _caregiverPatientRepository;
         private readonly IMapper _mapper;
 
         public PatientService(IPatientRepository patientRepository, IHospitalRepository hospitalRepository,
-                              IDoctorRepository doctorRepository, IMapper mapper)
+                              IDoctorRepository doctorRepository, ICaregiverPatientRepository caregiverPatientRepository,
+                              IMapper mapper)
         {
             _patientRepository = patientRepository;
             _hospitalRepository = hospitalRepository;
             _doctorRepository = doctorRepository;
+            _caregiverPatientRepository = caregiverPatientRepository;
             _mapper = mapper;
         }
 
@@ -85,7 +89,7 @@ namespace RemotePatientCare.BLL.Services
 
         public async Task DeleteAsync(string id)
         {
-            var doctor = await _patientRepository.GetAsync(x => x.Id == id);
+            var doctor = await _patientRepository.GetByIdAsync(id);
 
             if (doctor == null)
                 throw new NotFoundException($"Patient with such id {id} not found for deletion");
@@ -95,15 +99,16 @@ namespace RemotePatientCare.BLL.Services
 
         public async Task<CaregiverPatientDTO> GetPatientCaretakerAsync(string id)
         {
-            var patient = await _patientRepository.GetByIdAsync(id);
-
+            var patient = await _patientRepository.GetAsync(x => x.Id == id);
             if (patient == null)
                 throw new NotFoundException($"Patient with id {id} not found");
 
-            if (patient.CaregiverPatient == null)
+            var source = await _caregiverPatientRepository.GetAsync(x => x.Id == patient.CaregiverPatientId,
+                                                                includeProperties: "User", isTracking: false);
+            if (source == null)
                 return new CaregiverPatientDTO();
 
-            var result = _mapper.Map<CaregiverPatientDTO>(patient.CaregiverPatient);
+            var result = _mapper.Map<CaregiverPatientDTO>(source);
             return result;
         }
     }
