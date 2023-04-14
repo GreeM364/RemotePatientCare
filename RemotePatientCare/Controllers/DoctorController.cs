@@ -218,12 +218,12 @@ namespace RemotePatientCare.API.Controllers
         [HttpPatch("{id}/add-patient")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<APIResponse>> AddPatientToDoctor(string id, AddPatientToDoctorViewModel request)
+        public async Task<ActionResult<APIResponse>> AddPatientToDoctor(string id, [FromBody] AddPatientToDoctorViewModel request)
         {
             try
             {
-                var requestDTO = _mapper.Map<AddPatientToDoctorDTO>(request);
-                await _doctorService.AddPatientToDoctorAsync(id, requestDTO);
+                var patientToDoctortDTO = _mapper.Map<AddPatientToDoctorDTO>(request);
+                await _doctorService.AddPatientToDoctorAsync(id, patientToDoctortDTO);
 
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);

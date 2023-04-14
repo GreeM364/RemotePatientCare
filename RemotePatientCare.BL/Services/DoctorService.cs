@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
-using Azure.Core;
 using RemotePatientCare.BLL.DataTransferObjects;
 using RemotePatientCare.BLL.Exceptions;
 using RemotePatientCare.BLL.Services.Interfaces;
 using RemotePatientCare.DAL.Models;
 using RemotePatientCare.DAL.Repository.IRepository;
-using System.ComponentModel.DataAnnotations;
-using System.Numerics;
 
 namespace RemotePatientCare.BLL.Services
 {
