@@ -32,6 +32,7 @@ namespace RemotePatientCare.API
             CreateMap<LoginResultDTO, LoginResultViewModel>().ReverseMap();
 
             CreateMap<ProfileDTO, ProfileViewModel>().ReverseMap();
+            CreateMap<AddPatientToDoctorDTO, AddPatientToDoctorViewModel>().ReverseMap();
         }
     }
 }

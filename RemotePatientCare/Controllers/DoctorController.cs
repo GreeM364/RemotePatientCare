@@ -214,5 +214,66 @@ namespace RemotePatientCare.API.Controllers
                 return _response;
             }
         }
+
+        [HttpPatch("{id}/add-patient")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<APIResponse>> AddPatientToDoctor(string id, AddPatientToDoctorViewModel request)
+        {
+            try
+            {
+                var requestDTO = _mapper.Map<AddPatientToDoctorDTO>(request);
+                await _doctorService.AddPatientToDoctorAsync(id, requestDTO);
+
+                _response.StatusCode = HttpStatusCode.OK;
+                return Ok(_response);
+
+            }
+            catch (NotFoundException ex)
+            {
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.NotFound;
+                _response.ErrorMessages = new List<string> { ex.Message };
+
+                return NotFound(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string> { ex.ToString() };
+
+                return _response;
+            }
+        }
+
+        [HttpPatch("{patientId}/delete-patient")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<APIResponse>> DeletePatientToDoctorAsync(string patientId)
+        {
+            try
+            {
+                await _doctorService.DeletePatientToDoctorAsync(patientId);
+
+                _response.StatusCode = HttpStatusCode.OK;
+                return Ok(_response);
+
+            }
+            catch (NotFoundException ex)
+            {
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.NotFound;
+                _response.ErrorMessages = new List<string> { ex.Message };
+
+                return NotFound(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string> { ex.ToString() };
+
+                return _response;
+            }
+        }
     }
 }
