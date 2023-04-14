@@ -15,7 +15,6 @@ namespace RemotePatientCare.DAL.Repository
         public async Task CreateAsync(Hospital entity)
         {
             entity.CreatedDate = DateTime.Now;
-            //TODO entity.CreatedBy 
 
             _db.Hospitals.Add(entity);
 
@@ -25,7 +24,6 @@ namespace RemotePatientCare.DAL.Repository
         public async Task<Hospital> UpdateAsync(Hospital entity)
         {
             entity.LastModifiedDate = DateTime.Now;
-            //TODO entity.LastModifiedBy
 
             _db.Hospitals.Update(entity);
 

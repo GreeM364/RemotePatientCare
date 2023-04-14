@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RemotePatientCare.API.Models;
 using RemotePatientCare.BLL.DataTransferObjects;
 using RemotePatientCare.BLL.Exceptions;
 using RemotePatientCare.BLL.Services.Interfaces;
-using RemotePatientCare.Utility;
 using System.Net;
 
 namespace RemotePatientCare.API.Controllers

@@ -18,6 +18,7 @@ namespace RemotePatientCare.BLL.Infrastructure
             services.AddAutoMapper(typeof(HospitalAdministratorProfile));
             services.AddAutoMapper(typeof(HospitalProfile));
             services.AddAutoMapper(typeof(PatientProfile));
+            services.AddAutoMapper(typeof(UserProfile));
 
             services.AddScoped<IHospitalService, HospitalService>();
             services.AddScoped<IDoctorService, DoctorService>();

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using RemotePatientCare.DAL.Data;
 using RemotePatientCare.DAL.Identity;
+using RemotePatientCare.DAL.Infrastructure;
 using RemotePatientCare.DAL.Models;
 using RemotePatientCare.DAL.Repository.IRepository;
 using RemotePatientCare.Utility;
@@ -24,7 +25,6 @@ namespace RemotePatientCare.DAL.Repository
         public async Task CreateAsync(Patient entity, string password)
         {
             entity.CreatedDate = DateTime.Now;
-            //TODO entity.CreatedBy 
 
             _db.Patients.Add(entity);
             _db.BaseUsers.Add(entity.User);
@@ -42,7 +42,7 @@ namespace RemotePatientCare.DAL.Repository
             }
             else
             {
-                throw new Exception("Error while creating patient account"); // TODO: probably create IdentityException
+                throw new IdentityException("Error while creating patient account"); 
             }
 
             await _db.SaveChangesAsync();
@@ -51,7 +51,6 @@ namespace RemotePatientCare.DAL.Repository
         public async Task<Patient> UpdateAsync(Patient entity)
         {
             entity.LastModifiedDate = DateTime.Now;
-            //TODO entity.LastModifiedBy
 
             _db.Patients.Update(entity);
 

@@ -27,7 +27,7 @@ namespace RemotePatientCare.BLL.Services
 
             if (source == null)
             {
-                throw new NotFoundException($"PatientCaretaker with id {id} not found");
+                throw new NotFoundException($"Patient Caretaker with id {id} not found");
             }
 
             return _mapper.Map<CaregiverPatientDTO>(source);
