@@ -4,6 +4,7 @@ using RemotePatientCare.BLL.Services;
 using RemotePatientCare.DAL.Infrastructure;
 using RemotePatientCare.BLL.Mappings;
 using Microsoft.Extensions.Configuration;
+using RemotePatientCare.BLL.BrainTree;
 
 namespace RemotePatientCare.BLL.Infrastructure
 {
@@ -27,6 +28,9 @@ namespace RemotePatientCare.BLL.Infrastructure
             services.AddScoped<ICaregiverPatientService, CaregiverPatientService>();
             services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<IUserService, UserService>();
+
+            services.Configure<BrainTreeSettings>(configuration.GetSection("BrainTree"));
+            services.AddSingleton<IBrainTreeGate, BrainTreeGate>();
 
             return services;
         }
