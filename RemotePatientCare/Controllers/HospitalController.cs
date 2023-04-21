@@ -5,6 +5,7 @@ using System.Net;
 using AutoMapper;
 using RemotePatientCare.BLL.DataTransferObjects;
 using RemotePatientCare.BLL.Exceptions;
+using Newtonsoft.Json.Linq;
 
 namespace RemotePatientCare.API.Controllers
 {
@@ -261,6 +262,69 @@ namespace RemotePatientCare.API.Controllers
 
                 return Ok(_response);
 
+            }
+            catch (NotFoundException ex)
+            {
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.NotFound;
+                _response.ErrorMessages = new List<string> { ex.Message };
+
+                return NotFound(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string> { ex.ToString() };
+
+                return _response;
+            }
+        }
+
+        [HttpGet("GetToken")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<APIResponse>> GetToken()
+        {
+            try
+            {
+                var token = await _hospitalService.GetToken();
+
+                _response.Result = _mapper.Map<ClientTokenViewModel>(token);
+                _response.StatusCode = HttpStatusCode.OK;
+
+                return Ok(_response);
+
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string> { ex.Message };
+
+                return _response;
+            }
+        }
+
+        [HttpPatch("{id}/payment")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<APIResponse>> AddPaySubscription(string id, [FromBody] PaymentNonceViewModel request)
+        {
+            try
+            {
+                var paymentNonce = _mapper.Map<PaymentNonceDTO>(request);
+                await _hospitalService.PaySubscription(id, paymentNonce);
+
+                _response.StatusCode = HttpStatusCode.OK;
+                return Ok(_response);
+
+            }
+            catch (BadRequestException ex)
+            {
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.ErrorMessages = new List<string> { ex.ToString() };
+
+                return BadRequest(_response);
             }
             catch (NotFoundException ex)
             {

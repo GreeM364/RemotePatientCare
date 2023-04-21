@@ -4,6 +4,8 @@ using RemotePatientCare.BLL.Services.Interfaces;
 using RemotePatientCare.DAL.Models;
 using RemotePatientCare.DAL.Repository.IRepository;
 using RemotePatientCare.BLL.Exceptions;
+using RemotePatientCare.BLL.BrainTree;
+using Braintree;
 
 namespace RemotePatientCare.BLL.Services
 {
@@ -13,16 +15,18 @@ namespace RemotePatientCare.BLL.Services
         private readonly IDoctorRepository _doctorRepository;
         private readonly IPatientRepository _patientRepository;
         private readonly IHospitalAdministratorRepository _hospitalAdministratorRepository;
+        public readonly IBrainTreeGate _brainTreeGate;
         private readonly IMapper _mapper;
 
         public HospitalService(IHospitalRepository hospitalRepository, IDoctorRepository doctorRepository,
                                IPatientRepository patientRepository, IHospitalAdministratorRepository hospitalAdministratorRepository,
-                               IMapper mapper)
+                               IBrainTreeGate brainTreeGate, IMapper mapper)
         {
             _hospitalRepository = hospitalRepository;
             _doctorRepository = doctorRepository;
             _patientRepository = patientRepository;
             _hospitalAdministratorRepository = hospitalAdministratorRepository;
+            _brainTreeGate = brainTreeGate;
             _mapper = mapper;
         }
 
@@ -95,6 +99,48 @@ namespace RemotePatientCare.BLL.Services
                 throw new NotFoundException($"Hospital with such id {id} not found for deletion");
 
             await _hospitalRepository.RemoveAsync(hospital);
+        }
+
+        public async Task<ClientTokenDTO> GetToken()
+        {
+            var gateway = _brainTreeGate.GetGateway();
+            var clientToken = await gateway.ClientToken.GenerateAsync();
+
+            return new ClientTokenDTO { ClientToken = clientToken };
+        }
+
+        public async Task PaySubscription(string id, PaymentNonceDTO nonceDTO)
+        {
+            var hospital = await _hospitalRepository.GetAsync(x => x.Id == id);
+
+            if (hospital == null)
+                throw new NotFoundException($"Hospital with such id {id} not found");
+
+            string nonceFromTheClient = nonceDTO.PaymentNonce;
+
+            var request = new TransactionRequest
+            {
+                Amount = 1000,
+                PaymentMethodNonce = nonceFromTheClient,
+                OrderId = Guid.NewGuid().ToString(),
+                Options = new TransactionOptionsRequest
+                {
+                    SubmitForSettlement = true
+                }
+            };
+
+            var gateway = _brainTreeGate.GetGateway();
+            Result<Transaction> result = gateway.Transaction.Sale(request);
+
+            if (result.IsSuccess())
+            {
+                hospital.DataPaySubscription = DateTime.Today;
+                await _hospitalRepository.UpdateAsync(hospital);
+            }
+            else
+            {
+                throw new BadRequestException($"An error occurred while paying for the subscription");
+            }
         }
 
         public async Task<List<DoctorDTO>> GetDoctorsAsync(string id)

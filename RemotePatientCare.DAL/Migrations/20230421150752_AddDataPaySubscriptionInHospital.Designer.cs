@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RemotePatientCare.DAL.Data;
 
@@ -11,9 +12,11 @@ using RemotePatientCare.DAL.Data;
 namespace RemotePatientCare.DAL.Migrations
 {
     [DbContext(typeof(RemotePatientCareDbContext))]
-    partial class RemotePatientCareDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230421150752_AddDataPaySubscriptionInHospital")]
+    partial class AddDataPaySubscriptionInHospital
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -321,8 +324,8 @@ namespace RemotePatientCare.DAL.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DataPaySubscription")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("DataPaySubscription")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");

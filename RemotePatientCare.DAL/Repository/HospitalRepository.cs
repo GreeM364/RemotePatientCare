@@ -15,6 +15,7 @@ namespace RemotePatientCare.DAL.Repository
         public async Task CreateAsync(Hospital entity)
         {
             entity.CreatedDate = DateTime.Now;
+            entity.DataPaySubscription = DateTime.Today;
 
             _db.Hospitals.Add(entity);
 
