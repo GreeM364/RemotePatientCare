@@ -6,9 +6,6 @@ using RemotePatientCare.DAL.Models;
 using RemotePatientCare.DAL.Repository.IRepository;
 using RemotePatientCare.Utility;
 using RemotePatientCare.DAL.Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
-using System.Xml;
 
 
 namespace RemotePatientCare.DAL.Repository

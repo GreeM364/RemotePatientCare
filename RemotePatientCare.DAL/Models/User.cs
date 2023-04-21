@@ -10,6 +10,7 @@ namespace RemotePatientCare.DAL.Models
         public string Phone { get; set; } = null!;
         public string Email { get; set; } = null!;
         public DateTime BirthDate { get; set; }
+        
 
         public Doctor? Doctor { get; set; }
         public Patient? Patient { get; set; }
