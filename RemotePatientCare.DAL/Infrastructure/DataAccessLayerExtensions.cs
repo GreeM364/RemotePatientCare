@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
+using RemotePatientCare.DAL.Initializer;
 
 namespace RemotePatientCare.DAL.Infrastructure
 {
@@ -19,6 +19,7 @@ namespace RemotePatientCare.DAL.Infrastructure
         {
             services.AddDbContext<RemotePatientCareDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
             services.AddAutoMapper(typeof(ApplicationUserProfile));
+            services.AddSingleton<IConfiguration>(configuration);
 
             services.AddScoped<ICaregiverPatientRepository, CaregiverPatientRepository>();
             services.AddScoped<IDoctorRepository, DoctorRepository>();
@@ -31,12 +32,13 @@ namespace RemotePatientCare.DAL.Infrastructure
                     .AddEntityFrameworkStores<RemotePatientCareDbContext>()
                     .AddDefaultTokenProviders();
 
-            services.AddTransient<IdentityInitializer>();
-            services.BuildServiceProvider().GetService<IdentityInitializer>().InitializeRolesAsync();
-
             services.AddScoped<RoleManager<ApplicationRole>>();
 
-            services.AddSingleton<IConfiguration>(configuration);
+            services.AddScoped<IDbInitializer, DbInitializer>();
+            services.BuildServiceProvider().GetService<IDbInitializer>()!.Initialize();
+
+            services.AddTransient<IdentityInitializer>();
+            services.BuildServiceProvider().GetService<IdentityInitializer>().InitializeRolesAsync();
 
 
             services.AddScoped<JwtHandler>();
