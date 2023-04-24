@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RemotePatientCare.API.Models;
 using RemotePatientCare.BLL.DataTransferObjects;
 using RemotePatientCare.BLL.Exceptions;
 using RemotePatientCare.BLL.Services.Interfaces;
+using RemotePatientCare.Utility;
 using System.Net;
 
 namespace RemotePatientCare.API.Controllers
@@ -79,8 +81,11 @@ namespace RemotePatientCare.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = CustomRoles.HospitalAdministrator)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<ActionResult<APIResponse>> Post([FromBody] DoctorCreateViewModel request)
         {
             try
@@ -112,8 +117,11 @@ namespace RemotePatientCare.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = CustomRoles.Doctor)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> Put(string id, [FromBody] DoctorUpdateViewModel request)
         {
@@ -154,7 +162,10 @@ namespace RemotePatientCare.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = CustomRoles.HospitalAdministrator)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> Delete(string id)
         {
@@ -184,7 +195,10 @@ namespace RemotePatientCare.API.Controllers
         }
 
         [HttpGet("{id}/patients")]
+        [Authorize(Roles = CustomRoles.Doctor)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> GetPatients(string id)
         {
@@ -216,7 +230,10 @@ namespace RemotePatientCare.API.Controllers
         }
 
         [HttpPatch("{id}/add-patient")]
+        [Authorize(Roles = CustomRoles.Doctor)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> AddPatientToDoctor(string id, [FromBody] AddPatientToDoctorViewModel request)
         {
@@ -247,7 +264,10 @@ namespace RemotePatientCare.API.Controllers
         }
 
         [HttpPatch("{patientId}/delete-patient")]
+        [Authorize(Roles = CustomRoles.Doctor)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> DeletePatientToDoctorAsync(string patientId)
         {

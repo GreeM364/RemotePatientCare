@@ -5,7 +5,8 @@ using System.Net;
 using AutoMapper;
 using RemotePatientCare.BLL.DataTransferObjects;
 using RemotePatientCare.BLL.Exceptions;
-using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
+using RemotePatientCare.Utility;
 
 namespace RemotePatientCare.API.Controllers
 {
@@ -80,8 +81,11 @@ namespace RemotePatientCare.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = CustomRoles.GlobalAdmin)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<ActionResult<APIResponse>> Post([FromBody] HospitalCreateViewModel request)
         {
             try
@@ -113,8 +117,11 @@ namespace RemotePatientCare.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = CustomRoles.HospitalAdministrator)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> Put(string id, [FromBody] HospitalUpdateViewModel request)
         {
@@ -155,7 +162,10 @@ namespace RemotePatientCare.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = CustomRoles.GlobalAdmin)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> Delete(string id)
         {
@@ -185,7 +195,10 @@ namespace RemotePatientCare.API.Controllers
         }
 
         [HttpGet("{id}/doctors")]
+        [Authorize(Roles = CustomRoles.HospitalAdministrator)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> GetHospitalDoctors(string id)
         {
@@ -217,7 +230,10 @@ namespace RemotePatientCare.API.Controllers
         }
 
         [HttpGet("{id}/patients")]
+        [Authorize(Roles = CustomRoles.Doctor)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> GetHospitalPatients(string id)
         {
@@ -249,7 +265,10 @@ namespace RemotePatientCare.API.Controllers
         }
 
         [HttpGet("{id}/administrators")]
+        [Authorize(Roles = CustomRoles.GlobalAdmin)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<APIResponse>> GetHospitalAdministrators(string id)
         {
