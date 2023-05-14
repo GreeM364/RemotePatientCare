@@ -15,20 +15,10 @@ builder.Services.AddSignalR();
 builder.Services.AddAutoMapper(typeof(AutomapperIoTProfile));
 builder.Services.AddBusinessLogicLayer(builder.Configuration);
 
-builder.Services.AddScoped<IPhysicalConditionRealTimeObserver, PhysicalConditionRealTimeObserver>();
-builder.Services.AddScoped<IAveragePhysicalConditionObserver, AveragePhysicalConditionObserver>();
-builder.Services.AddScoped<ICritical—onditionObserver, Critical—onditionObserver>();
-builder.Services.AddHostedService<MqttService>(provider =>
-{
-    var options = provider.GetService<IConfiguration>();
-    using (var scope = provider.CreateScope())
-    {
-        var physicalConditionRealTimeObserver = scope.ServiceProvider.GetService<IPhysicalConditionRealTimeObserver>();
-        var averagePhysicalConditionObserver = scope.ServiceProvider.GetService<IAveragePhysicalConditionObserver>();
-        var critical—onditionObserver = scope.ServiceProvider.GetService<ICritical—onditionObserver>();
-        return new MqttService(options, physicalConditionRealTimeObserver, averagePhysicalConditionObserver, critical—onditionObserver);
-    }
-});
+builder.Services.AddSingleton<IPhysicalConditionRealTimeObserver, PhysicalConditionRealTimeObserver>();
+builder.Services.AddSingleton<IAveragePhysicalConditionObserver, AveragePhysicalConditionObserver>();
+builder.Services.AddSingleton<ICritical—onditionObserver, Critical—onditionObserver>();
+builder.Services.AddHostedService<MqttService>();
 //builder.Services.BuildServiceProvider().GetService<MqttService>().ConnectAsync();
 
 

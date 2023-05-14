@@ -12,17 +12,21 @@ namespace RemotePatientCare.IoT.Observers
     public class PhysicalConditionRealTimeObserver : IPhysicalConditionRealTimeObserver
     {
         private readonly IHubContext<PhysicalConditionHub> _hub;
-        private readonly IPatientService _patientService;
-        public PhysicalConditionRealTimeObserver(IHubContext<PhysicalConditionHub> hub, IPatientService patientService)
+        private readonly IServiceScopeFactory _serviceScopeFactory;
+        public PhysicalConditionRealTimeObserver(IHubContext<PhysicalConditionHub> hub, IServiceScopeFactory serviceScopeFactory)
         {
             _hub = hub;
-            _patientService = patientService;
+            _serviceScopeFactory = serviceScopeFactory;
         }
 
         public async Task HandleMessageAsync(MqttApplicationMessage message)
         {
             if (message.Topic == "test/topic1")
             {
+                using var scope = _serviceScopeFactory.CreateScope();
+                var _patientService = scope.ServiceProvider.GetRequiredService<IPatientService>();
+
+
                 var payload = Encoding.UTF8.GetString(message.Payload);
                 var physicalCondition = JsonConvert.DeserializeObject<IndicatorsPhysicalConditionRealTime>(payload)!;
 

@@ -6,7 +6,7 @@ namespace RemotePatientCare.IoT.Hubs
     {
         public async override Task OnConnectedAsync()
         {
-            await Clients.All.SendAsync("UserDate", "x", "x");
+            await Clients.All.SendAsync("UserDate", Context.ConnectionId);
         }
     }
 }
