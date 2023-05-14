@@ -3,7 +3,6 @@ using RemotePatientCare.BLL.DataTransferObjects;
 using RemotePatientCare.BLL.Exceptions;
 using RemotePatientCare.BLL.Services.Interfaces;
 using RemotePatientCare.DAL.Models;
-using RemotePatientCare.DAL.Repository;
 using RemotePatientCare.DAL.Repository.IRepository;
 
 namespace RemotePatientCare.BLL.Services
@@ -109,6 +108,21 @@ namespace RemotePatientCare.BLL.Services
                 return new CaregiverPatientDTO();
 
             var result = _mapper.Map<CaregiverPatientDTO>(source);
+            return result;
+        }
+
+        public async Task<DoctorDTO> GetPatientDoctorAsync(string id)
+        {
+            var patient = await _patientRepository.GetAsync(x => x.Id == id);
+            if (patient == null)
+                throw new NotFoundException($"Patient with id {id} not found");
+
+            var source = await _doctorRepository.GetAsync(x => x.Id == patient.DoctorId,
+                                                                includeProperties: "User", isTracking: false);
+            if (source == null)
+                return new DoctorDTO();
+
+            var result = _mapper.Map<DoctorDTO>(source);
             return result;
         }
     }

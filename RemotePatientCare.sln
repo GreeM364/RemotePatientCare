@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemotePatientCare.API", "RemotePatientCare\RemotePatientCare.API.csproj", "{3A9447A3-24FB-4367-A514-85E45D46A012}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemotePatientCare.API", "RemotePatientCare\RemotePatientCare.API.csproj", "{3A9447A3-24FB-4367-A514-85E45D46A012}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemotePatientCare.BLL", "RemotePatientCare.BL\RemotePatientCare.BLL.csproj", "{4AF336F9-4C2B-4F98-9382-F9AF128EE451}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemotePatientCare.BLL", "RemotePatientCare.BL\RemotePatientCare.BLL.csproj", "{4AF336F9-4C2B-4F98-9382-F9AF128EE451}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemotePatientCare.DAL", "RemotePatientCare.DAL\RemotePatientCare.DAL.csproj", "{1E43D5EE-20B2-4697-88CE-351B3E524A5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemotePatientCare.DAL", "RemotePatientCare.DAL\RemotePatientCare.DAL.csproj", "{1E43D5EE-20B2-4697-88CE-351B3E524A5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemotePatientCare.Utility", "RemotePatientCare.Utility\RemotePatientCare.Utility.csproj", "{3EF2B050-1FB6-47BF-9819-3C41E9529334}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemotePatientCare.Utility", "RemotePatientCare.Utility\RemotePatientCare.Utility.csproj", "{3EF2B050-1FB6-47BF-9819-3C41E9529334}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemotePatientCare.IoT", "RemotePatientCare.IoT\RemotePatientCare.IoT.csproj", "{574D0071-EB98-4588-B0FC-B49D9F9B6209}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{3EF2B050-1FB6-47BF-9819-3C41E9529334}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EF2B050-1FB6-47BF-9819-3C41E9529334}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EF2B050-1FB6-47BF-9819-3C41E9529334}.Release|Any CPU.Build.0 = Release|Any CPU
+		{574D0071-EB98-4588-B0FC-B49D9F9B6209}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{574D0071-EB98-4588-B0FC-B49D9F9B6209}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{574D0071-EB98-4588-B0FC-B49D9F9B6209}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{574D0071-EB98-4588-B0FC-B49D9F9B6209}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RemotePatientCare.DAL.Data;
 
@@ -11,9 +12,11 @@ using RemotePatientCare.DAL.Data;
 namespace RemotePatientCare.DAL.Migrations
 {
     [DbContext(typeof(RemotePatientCareDbContext))]
-    partial class RemotePatientCareDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230513102808_AddIndicatorsPhysicalCondition")]
+    partial class AddIndicatorsPhysicalCondition
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -436,6 +439,9 @@ namespace RemotePatientCare.DAL.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -446,7 +452,6 @@ namespace RemotePatientCare.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("PatientId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Pulse")
@@ -640,9 +645,7 @@ namespace RemotePatientCare.DAL.Migrations
                 {
                     b.HasOne("RemotePatientCare.DAL.Models.Patient", "Patient")
                         .WithMany("PhysicalCondition")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PatientId");
 
                     b.Navigation("Patient");
                 });

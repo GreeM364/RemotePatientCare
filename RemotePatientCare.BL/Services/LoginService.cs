@@ -50,17 +50,17 @@ namespace RemotePatientCare.BLL.Services
 
                     break;
                 }
-                if(role == CustomRoles.HospitalAdministrator)
-                {
-                    var admin = await _hospitalAdministratorRepository.GetAsync(a => a.UserId == user.Id, "Hospital");
+                //if(role == CustomRoles.HospitalAdministrator)
+                //{
+                //    var admin = await _hospitalAdministratorRepository.GetAsync(a => a.UserId == user.Id, "Hospital");
 
-                    bool checkSubscription = CheckSubscription(admin.Hospital.DataPaySubscription);
+                //    bool checkSubscription = CheckSubscription(admin.Hospital.DataPaySubscription);
 
-                    if (checkSubscription)
-                        return new LoginResultDTO() { ErrorMessage = "Subscription expired"};
+                //    if (checkSubscription)
+                //        return new LoginResultDTO() { ErrorMessage = "Subscription expired"};
 
-                    break;
-                }
+                //    break;
+                //}
             }
 
 

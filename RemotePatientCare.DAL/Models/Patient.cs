@@ -13,5 +13,7 @@
 
         public string HospitalId { get; set; } = null!;
         public Hospital Hospital { get; set; } = null!;
+
+        public List<PhysicalCondition>? PhysicalCondition { get; set; }
     }
 }

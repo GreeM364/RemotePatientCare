@@ -37,6 +37,8 @@ namespace RemotePatientCare.API
 
             CreateMap<ClientTokenDTO, ClientTokenViewModel>().ReverseMap();
             CreateMap<PaymentNonceDTO, PaymentNonceViewModel>().ReverseMap();
+
+            CreateMap<PhysicalConditionDTO, PhysicalConditionViewModel>().ReverseMap();
         }
     }
 }

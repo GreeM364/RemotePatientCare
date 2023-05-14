@@ -234,5 +234,41 @@ namespace RemotePatientCare.API.Controllers
                 return _response;
             }
         }
+
+
+        [HttpGet("{id}/doctor")]
+        [Authorize(Roles = CustomRoles.Patient)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<APIResponse>> GetPatientDoctor(string id)
+        {
+            try
+            {
+                var doctor = await _patientService.GetPatientDoctorAsync(id);
+
+                _response.Result = _mapper.Map<DoctorViewModel>(doctor);
+                _response.StatusCode = HttpStatusCode.OK;
+
+                return Ok(_response);
+
+            }
+            catch (NotFoundException ex)
+            {
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.NotFound;
+                _response.ErrorMessages = new List<string> { ex.Message };
+
+                return NotFound(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string> { ex.Message };
+
+                return _response;
+            }
+        }
     }
 }

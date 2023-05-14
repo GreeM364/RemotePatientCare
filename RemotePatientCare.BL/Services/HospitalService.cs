@@ -157,7 +157,7 @@ namespace RemotePatientCare.BLL.Services
 
         public async Task<List<PatientDTO>> GetPatientsAsync(string id)
         {
-            if (await _hospitalRepository.GetAsync(x => x.Id == id) == null )
+            if (await _hospitalRepository.GetAsync(x => x.Id == id) == null)
                 throw new NotFoundException($"Hospital with such id {id} not found");
 
             var source = await _patientRepository.GetAllAsync(x => x.HospitalId == id, includeProperties: "User",
