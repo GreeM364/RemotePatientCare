@@ -2,7 +2,7 @@
 
 namespace RemotePatientCare.DAL.Repository.IRepository
 {
-    public interface IPhysicalConditioneRepository : IRepository<PhysicalCondition>
+    public interface IPhysicalConditionRepository : IRepository<PhysicalCondition>
     {
         Task CreateAsync(PhysicalCondition entity);
         Task<PhysicalCondition> UpdateAsync(PhysicalCondition entity);

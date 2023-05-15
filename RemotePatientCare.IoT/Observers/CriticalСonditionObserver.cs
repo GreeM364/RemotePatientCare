@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.SignalR;
 using MQTTnet;
 using Newtonsoft.Json;
+using RemotePatientCare.BLL.DataTransferObjects;
 using RemotePatientCare.BLL.Services.Interfaces;
 using RemotePatientCare.IoT.Hubs;
 using RemotePatientCare.IoT.Models;
@@ -13,9 +15,12 @@ namespace RemotePatientCare.IoT.Observers
     {
         private readonly IHubContext<PhysicalConditionHub> _hub;
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        public CriticalСonditionObserver(IHubContext<PhysicalConditionHub> hub, IServiceScopeFactory serviceScopeFactory)
+        private readonly IMapper _mapper;
+        public CriticalСonditionObserver(IHubContext<PhysicalConditionHub> hub, IServiceScopeFactory serviceScopeFactory.
+                                         IMapper mapper)
         {
             _hub = hub;
+            _mapper = mapper;
             _serviceScopeFactory = serviceScopeFactory;
         }
         public async Task HandleMessageAsync(MqttApplicationMessage message)
@@ -23,17 +28,30 @@ namespace RemotePatientCare.IoT.Observers
             if (message.Topic == "test/topic3")
             {
                 using var scope = _serviceScopeFactory.CreateScope();
-                var _patientService = scope.ServiceProvider.GetRequiredService<IPatientService>();
-
 
                 var payload = Encoding.UTF8.GetString(message.Payload);
                 var criticalCondition = JsonConvert.DeserializeObject<IndicatorsCriticalСondition>(payload)!;
 
-                var caretaker = await _patientService.GetPatientCaretakerAsync(criticalCondition.PatientId);
-                var doctor = await _patientService.GetPatientDoctorAsync(criticalCondition.PatientId);
-
-                await _hub.Clients.All.SendAsync("CriticalCondition", criticalCondition);
+                await Send(scope, criticalCondition);
+                await Save(scope, criticalCondition);
             }
+        }
+
+        private async Task Save(IServiceScope scope, IndicatorsCriticalСondition criticalCondition)
+        {
+            var criticalСonditionService = scope.ServiceProvider.GetRequiredService<ICriticalСonditionService>();
+            var criticalConditionDTO = _mapper.Map<CriticalСonditionCreateDTO>(criticalCondition);
+
+            await criticalСonditionService.CreateAsync(criticalConditionDTO);
+        }
+
+        private async Task Send(IServiceScope scope, IndicatorsCriticalСondition criticalCondition)
+        {
+            var patientService = scope.ServiceProvider.GetRequiredService<IPatientService>();
+            var caretaker = await patientService.GetPatientCaretakerAsync(criticalCondition.PatientId);
+            var doctor = await patientService.GetPatientDoctorAsync(criticalCondition.PatientId);
+
+            await _hub.Clients.All.SendAsync("CriticalCondition", criticalCondition);
         }
     }
 }

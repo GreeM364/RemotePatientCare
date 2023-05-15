@@ -9,11 +9,11 @@ namespace RemotePatientCare.BLL.Services
 {
     public class PhysicalConditionService : IPhysicalConditionService
     {
-        private readonly IPhysicalConditioneRepository _physicalConditionRepositort;
+        private readonly IPhysicalConditionRepository _physicalConditionRepositort;
         private readonly IPatientRepository _patientRepository;
         private readonly IMapper _mapper;
 
-        public PhysicalConditionService(IPhysicalConditioneRepository physicalConditionRepositort, IPatientRepository patientRepository,
+        public PhysicalConditionService(IPhysicalConditionRepository physicalConditionRepositort, IPatientRepository patientRepository,
                                         IMapper mapper)
         {
             _physicalConditionRepositort = physicalConditionRepositort;

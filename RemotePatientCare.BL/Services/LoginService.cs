@@ -77,7 +77,5 @@ namespace RemotePatientCare.BLL.Services
 
             return true;
         }
-
-
     }
 }

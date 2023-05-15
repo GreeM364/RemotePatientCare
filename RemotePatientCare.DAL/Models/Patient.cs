@@ -15,5 +15,6 @@
         public Hospital Hospital { get; set; } = null!;
 
         public List<PhysicalCondition>? PhysicalCondition { get; set; }
+        public List<CriticalСondition>? CriticalСondition { get; set; }
     }
 }

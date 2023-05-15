@@ -19,7 +19,6 @@ builder.Services.AddSingleton<IPhysicalConditionRealTimeObserver, PhysicalCondit
 builder.Services.AddSingleton<IAveragePhysicalConditionObserver, AveragePhysicalConditionObserver>();
 builder.Services.AddSingleton<ICriticalÑonditionObserver, CriticalÑonditionObserver>();
 builder.Services.AddHostedService<MqttService>();
-//builder.Services.BuildServiceProvider().GetService<MqttService>().ConnectAsync();
 
 
 var app = builder.Build();
@@ -38,10 +37,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapHub<PhysicalConditionHub>("/physicalconditionhub");
-    endpoints.MapControllers();
-});
+app.MapHub<PhysicalConditionHub>("/physicalconditionhub");
 
 app.Run();

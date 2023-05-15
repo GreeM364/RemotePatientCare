@@ -27,7 +27,8 @@ namespace RemotePatientCare.DAL.Infrastructure
             services.AddScoped<IHospitalRepository, HospitalRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IPhysicalConditioneRepository, PhysicalConditionRepository>();
+            services.AddScoped<IPhysicalConditionRepository, PhysicalConditionRepository>();
+            services.AddScoped<ICriticalСonditionRepository, CriticalСonditionRepository>();
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                     .AddEntityFrameworkStores<RemotePatientCareDbContext>()

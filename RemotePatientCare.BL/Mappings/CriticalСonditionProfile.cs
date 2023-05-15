@@ -4,14 +4,14 @@ using RemotePatientCare.DAL.Models;
 
 namespace RemotePatientCare.BLL.Mappings
 {
-    public class PhysicalConditionProfile : Profile
+    public class CriticalСonditionProfile : Profile
     {
-        public PhysicalConditionProfile()
+        public CriticalСonditionProfile()
         {
-            CreateMap<PhysicalConditionDTO, PhysicalCondition>()
+            CreateMap<CriticalСonditionDTO, CriticalСondition>()
             .ForMember(x => x.CreatedDate, o => o.MapFrom(s => s.Time))
             .ReverseMap();
-            CreateMap<PhysicalCondition, PhysicalConditionCreateDTO>().ReverseMap();
+            CreateMap<CriticalСondition, CriticalСonditionCreateDTO>().ReverseMap();
         }
     }
 }

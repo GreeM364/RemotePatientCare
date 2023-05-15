@@ -4,7 +4,7 @@ using RemotePatientCare.DAL.Repository.IRepository;
 
 namespace RemotePatientCare.DAL.Repository
 {
-    public class PhysicalConditionRepository : Repository<PhysicalCondition>, IPhysicalConditioneRepository
+    public class PhysicalConditionRepository : Repository<PhysicalCondition>, IPhysicalConditionRepository
     {
         private readonly RemotePatientCareDbContext _db;
         public PhysicalConditionRepository(RemotePatientCareDbContext db) : base(db)

@@ -17,6 +17,7 @@ namespace RemotePatientCare.DAL.Data
         public DbSet<CaregiverPatient> CaregiverPatients { get; set; }
         public DbSet<ApplicationRole> Roles { get; set; }
         public DbSet<PhysicalCondition> PhysicalConditions { get; set; }
+        public DbSet<CriticalСondition> CriticalСonditions { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

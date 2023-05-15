@@ -9,6 +9,6 @@
         public int LowerArterialPressure { get; set; }
         public double BodyTemperature { get; set; }
         public int BreathingRate { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime Time { get; set; }
     }
 }

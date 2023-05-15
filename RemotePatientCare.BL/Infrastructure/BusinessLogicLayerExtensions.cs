@@ -21,6 +21,7 @@ namespace RemotePatientCare.BLL.Infrastructure
             services.AddAutoMapper(typeof(PatientProfile));
             services.AddAutoMapper(typeof(UserProfile));
             services.AddAutoMapper(typeof(PhysicalConditionProfile));
+            services.AddAutoMapper(typeof(CriticalСonditionProfile));
 
             services.AddScoped<IHospitalService, HospitalService>();
             services.AddScoped<IDoctorService, DoctorService>();
@@ -29,7 +30,8 @@ namespace RemotePatientCare.BLL.Infrastructure
             services.AddScoped<ICaregiverPatientService, CaregiverPatientService>();
             services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IPhysicalConditionService,  PhysicalConditionService>();
+            services.AddScoped<IPhysicalConditionService, PhysicalConditionService>();
+            services.AddScoped<ICriticalСonditionService, CriticalСonditionService>();
 
             services.Configure<BrainTreeSettings>(configuration.GetSection("BrainTree"));
             services.AddSingleton<IBrainTreeGate, BrainTreeGate>();

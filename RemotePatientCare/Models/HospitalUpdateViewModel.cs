@@ -10,7 +10,6 @@ namespace RemotePatientCare.API.Models
         [Required]
         public string Address { get; set; } = null!;
 
-        [Required]
         public DateTime DataPaySubscription { get; set; }
     }
 }
