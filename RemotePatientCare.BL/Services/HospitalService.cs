@@ -33,18 +33,41 @@ namespace RemotePatientCare.BLL.Services
         public async Task<HospitalDTO> GetByIdAsync(string id)
         {
             var source = await _hospitalRepository.GetByIdAsync(id);
+            var patientCount = await _patientRepository.GetAllAsync(p => p.HospitalId == id);
+            var doctorCount = await _doctorRepository.GetAllAsync(d => d.HospitalId == id);
 
             if (source == null)
             {
                 throw new NotFoundException($"Hospital with id {id} not found");
             }
 
-            return _mapper.Map<HospitalDTO>(source);
+            var hospitalDTO = _mapper.Map<HospitalDTO>(source);
+            hospitalDTO.PatientsCount = patientCount.Count();
+            hospitalDTO.DoctorsCount = doctorCount.Count();
+
+            return hospitalDTO;
         }
 
         public async Task<List<HospitalDTO>> GetAsync()
         {
             var source = await _hospitalRepository.GetAllAsync();
+            var hospitalDTO = _mapper.Map<List<HospitalDTO>>(source);
+
+            hospitalDTO = hospitalDTO.Select(async h =>
+            {
+                var patientCount = (await _patientRepository.GetAllAsync(p => p.HospitalId == h.Id)).Count();
+                var doctorCount = (await _doctorRepository.GetAllAsync(d => d.HospitalId == h.Id)).Count();
+                return new HospitalDTO
+                {
+                    Id = h.Id,
+                    Name = h.Name,
+                    Address = h.Address,
+                    DataPaySubscription = h.DataPaySubscription,
+                    DoctorsCount = doctorCount,
+                    PatientsCount = patientCount
+                };
+            }).Select(t => t.Result).ToList();
+
             return _mapper.Map<List<HospitalDTO>>(source); 
         }
 

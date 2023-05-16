@@ -15,7 +15,7 @@ builder.Services.AddSignalR();
 builder.Services.AddAutoMapper(typeof(AutomapperIoTProfile));
 builder.Services.AddBusinessLogicLayer(builder.Configuration);
 
-builder.Services.AddSingleton<IPhysicalConditionRealTimeObserver, PhysicalConditionRealTimeObserver>();
+builder.Services.AddSingleton<IRealTimePhysicalConditionObserver, RealTimePhysicalConditionObserver>();
 builder.Services.AddSingleton<IAveragePhysicalConditionObserver, AveragePhysicalConditionObserver>();
 builder.Services.AddSingleton<ICriticalÑonditionObserver, CriticalÑonditionObserver>();
 builder.Services.AddHostedService<MqttService>();

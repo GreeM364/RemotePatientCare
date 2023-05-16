@@ -25,5 +25,4 @@ namespace RemotePatientCare.IoT.Observers
             }
         }
     }
-
 }

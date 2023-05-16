@@ -14,7 +14,7 @@ namespace RemotePatientCare.IoT
         private IManagedMqttClient _mqttClient;
         private readonly MqttMessageHandler _messageHandler;
 
-        public MqttService(IConfiguration configuration, IPhysicalConditionRealTimeObserver realTimeObserver,
+        public MqttService(IConfiguration configuration, IRealTimePhysicalConditionObserver realTimeObserver,
                            IAveragePhysicalConditionObserver averageConditionObserver,
                            ICriticalСonditionObserver criticalConditionObserver) 
         {

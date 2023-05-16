@@ -9,11 +9,11 @@ using System.Text;
 
 namespace RemotePatientCare.IoT.Observers
 {
-    public class PhysicalConditionRealTimeObserver : IPhysicalConditionRealTimeObserver
+    public class RealTimePhysicalConditionObserver : IRealTimePhysicalConditionObserver
     {
         private readonly IHubContext<PhysicalConditionHub> _hub;
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        public PhysicalConditionRealTimeObserver(IHubContext<PhysicalConditionHub> hub, IServiceScopeFactory serviceScopeFactory)
+        public RealTimePhysicalConditionObserver(IHubContext<PhysicalConditionHub> hub, IServiceScopeFactory serviceScopeFactory)
         {
             _hub = hub;
             _serviceScopeFactory = serviceScopeFactory;

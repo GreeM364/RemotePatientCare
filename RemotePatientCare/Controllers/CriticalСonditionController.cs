@@ -87,9 +87,9 @@ namespace RemotePatientCare.API.Controllers
         {
             try
             {
-                var _criticalСondition = await _criticalСonditionService.GetCriticalСonditionByPatientAsync(id);
+                var criticalСondition = await _criticalСonditionService.GetCriticalСonditionByPatientAsync(id);
 
-                _response.Result = _mapper.Map<List<CriticalСonditionViewModel>>(_criticalСondition);
+                _response.Result = _mapper.Map<List<CriticalСonditionViewModel>>(criticalСondition);
                 _response.StatusCode = HttpStatusCode.OK;
 
                 return Ok(_response);

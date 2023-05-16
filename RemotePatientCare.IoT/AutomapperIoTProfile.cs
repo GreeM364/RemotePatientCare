@@ -9,6 +9,7 @@ namespace RemotePatientCare.IoT
         public AutomapperIoTProfile()
         {
             CreateMap<PhysicalConditionCreateDTO, IndicatorsPhysicalConditionAverage>().ReverseMap();
+            CreateMap<CriticalСonditionCreateDTO, IndicatorsCriticalСondition>().ReverseMap();
         }
     }
 }

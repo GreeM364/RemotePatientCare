@@ -16,7 +16,7 @@ namespace RemotePatientCare.IoT.Observers
         private readonly IHubContext<PhysicalConditionHub> _hub;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IMapper _mapper;
-        public CriticalСonditionObserver(IHubContext<PhysicalConditionHub> hub, IServiceScopeFactory serviceScopeFactory.
+        public CriticalСonditionObserver(IHubContext<PhysicalConditionHub> hub, IServiceScopeFactory serviceScopeFactory,
                                          IMapper mapper)
         {
             _hub = hub;

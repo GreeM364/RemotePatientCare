@@ -24,14 +24,12 @@ namespace RemotePatientCare.BLL.Services
         public async Task CreateAsync(PhysicalConditionCreateDTO request)
         {
             if (await _patientRepository.GetAsync(p => p.Id == request.PatientId) == null)
-                throw new BadRequestException($"Patient with Id {request.PatientId} does exist");
+                throw new NotFoundException($"Patient with Id {request.PatientId} does exist");
             if (request == null)
                 throw new BadRequestException("The request model of PhysicalCondition is null");
 
             var createEntity = _mapper.Map<PhysicalCondition>(request);
             await _physicalConditionRepositort.CreateAsync(createEntity);
-
-            var result = _mapper.Map<PhysicalConditionDTO>(createEntity);
         }
 
         public async Task<List<PhysicalConditionDTO>> GetAsync()

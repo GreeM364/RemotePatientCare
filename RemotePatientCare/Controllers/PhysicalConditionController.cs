@@ -89,9 +89,9 @@ namespace RemotePatientCare.API.Controllers
         {
             try
             {
-                var _physicalCondition = await _physicalConditionService.GetPhysicalConditionByPatientAsync(id);
+                var physicalCondition = await _physicalConditionService.GetPhysicalConditionByPatientAsync(id);
 
-                _response.Result = _mapper.Map<List<PhysicalConditionViewModel>>(_physicalCondition);
+                _response.Result = _mapper.Map<List<PhysicalConditionViewModel>>(physicalCondition);
                 _response.StatusCode = HttpStatusCode.OK;
 
                 return Ok(_response);
