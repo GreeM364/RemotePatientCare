@@ -21,15 +21,5 @@ namespace RemotePatientCare.DAL.Repository
 
             await SaveAsync();
         }
-
-        public async Task<CriticalСondition> UpdateAsync(CriticalСondition entity)
-        {
-            entity.LastModifiedDate = DateTime.Now;
-
-            _db.CriticalСonditions.Update(entity);
-
-            await _db.SaveChangesAsync();
-            return entity;
-        }
     }
 }

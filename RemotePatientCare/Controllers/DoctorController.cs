@@ -117,7 +117,7 @@ namespace RemotePatientCare.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = CustomRoles.Doctor)]
+        [Authorize(Roles = CustomRoles.HospitalAdministrator + "," + CustomRoles.Doctor)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

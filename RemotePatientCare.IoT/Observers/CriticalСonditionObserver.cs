@@ -32,7 +32,7 @@ namespace RemotePatientCare.IoT.Observers
                 var payload = Encoding.UTF8.GetString(message.Payload);
                 var criticalCondition = JsonConvert.DeserializeObject<IndicatorsCriticalСondition>(payload)!;
 
-                await Send(scope, criticalCondition);
+                await Send(criticalCondition);
                 await Save(scope, criticalCondition);
             }
         }
@@ -45,13 +45,9 @@ namespace RemotePatientCare.IoT.Observers
             await criticalСonditionService.CreateAsync(criticalConditionDTO);
         }
 
-        private async Task Send(IServiceScope scope, IndicatorsCriticalСondition criticalCondition)
+        private async Task Send(IndicatorsCriticalСondition criticalCondition)
         {
-            var patientService = scope.ServiceProvider.GetRequiredService<IPatientService>();
-            var caretaker = await patientService.GetPatientCaretakerAsync(criticalCondition.PatientId);
-            var doctor = await patientService.GetPatientDoctorAsync(criticalCondition.PatientId);
-
-            await _hub.Clients.All.SendAsync("CriticalCondition", criticalCondition);
+            await _hub.Clients.Group($"{criticalCondition.PatientId}").SendAsync("CriticalCondition", criticalCondition);
         }
     }
 }

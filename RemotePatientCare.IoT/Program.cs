@@ -20,6 +20,16 @@ builder.Services.AddSingleton<IAveragePhysicalConditionObserver, AveragePhysical
 builder.Services.AddSingleton<ICriticalÑonditionObserver, CriticalÑonditionObserver>();
 builder.Services.AddHostedService<MqttService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOrigin", builder =>
+    {
+        builder.WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
 
 var app = builder.Build();
 
@@ -30,6 +40,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowOrigin");
 
 app.UseHttpsRedirection();
 

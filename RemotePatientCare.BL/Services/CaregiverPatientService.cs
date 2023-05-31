@@ -76,7 +76,7 @@ namespace RemotePatientCare.BLL.Services
 
         public async Task DeleteAsync(string id)
         {
-            var caregiverPatient = await _caregiverPatientRepository.GetAsync(x => x.Id == id);
+            var caregiverPatient = await _caregiverPatientRepository.GetAsync(c => c.Id == id, "User");
 
             if (caregiverPatient == null)
                 throw new NotFoundException($"Caregiver Patient with such id {id} not found for deletion");

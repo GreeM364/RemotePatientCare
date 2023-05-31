@@ -68,7 +68,7 @@ namespace RemotePatientCare.BLL.Services
                 };
             }).Select(t => t.Result).ToList();
 
-            return _mapper.Map<List<HospitalDTO>>(source); 
+            return hospitalDTO; 
         }
 
         public async Task<HospitalDTO> CreateAsync(HospitalCreateDTO request)

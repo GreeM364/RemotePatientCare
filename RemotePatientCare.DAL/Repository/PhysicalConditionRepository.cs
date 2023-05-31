@@ -20,15 +20,5 @@ namespace RemotePatientCare.DAL.Repository
 
             await SaveAsync();
         }
-
-        public async Task<PhysicalCondition> UpdateAsync(PhysicalCondition entity)
-        {
-            entity.LastModifiedDate = DateTime.Now;
-
-            _db.PhysicalConditions.Update(entity);
-
-            await _db.SaveChangesAsync();
-            return entity;
-        }
     }
 }

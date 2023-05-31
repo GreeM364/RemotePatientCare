@@ -47,14 +47,12 @@ namespace RemotePatientCare.DAL.Repository
             await _db.SaveChangesAsync();
         }
 
-        public async Task<CaregiverPatient> UpdateAsync(CaregiverPatient entity)
+        public async Task RemoveAsync(CaregiverPatient entity)
         {
-            entity.LastModifiedDate = DateTime.Now;
-
-            _db.CaregiverPatients.Update(entity);
+            _db.BaseUsers.Remove(entity.User);
+            _db.CaregiverPatients.Remove(entity);
 
             await _db.SaveChangesAsync();
-            return entity;
         }
     }
 }

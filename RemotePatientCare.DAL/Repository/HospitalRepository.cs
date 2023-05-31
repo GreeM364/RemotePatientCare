@@ -21,15 +21,5 @@ namespace RemotePatientCare.DAL.Repository
 
             await SaveAsync();
         }
-
-        public async Task<Hospital> UpdateAsync(Hospital entity)
-        {
-            entity.LastModifiedDate = DateTime.Now;
-
-            _db.Hospitals.Update(entity);
-
-            await _db.SaveChangesAsync();
-            return entity;
-        }
     }
 }

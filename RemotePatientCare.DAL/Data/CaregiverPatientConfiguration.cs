@@ -14,8 +14,8 @@ namespace RemotePatientCare.DAL.Data
 
             builder.HasMany(x => x.Patients)
                 .WithOne(x => x.CaregiverPatient)
-                .HasForeignKey(x => x.DoctorId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(x => x.CaregiverPatientId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

@@ -5,6 +5,5 @@ namespace RemotePatientCare.DAL.Repository.IRepository
     public interface IHospitalRepository : IRepository<Hospital>
     {
         Task CreateAsync(Hospital entity);
-        Task<Hospital> UpdateAsync(Hospital entity);
     }
 }

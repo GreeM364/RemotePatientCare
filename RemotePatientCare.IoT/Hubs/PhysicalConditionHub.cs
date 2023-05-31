@@ -8,5 +8,10 @@ namespace RemotePatientCare.IoT.Hubs
         {
             await Clients.All.SendAsync("UserDate", Context.ConnectionId);
         }
+
+        public async Task Enter( string groupName)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+        }
     }
 }

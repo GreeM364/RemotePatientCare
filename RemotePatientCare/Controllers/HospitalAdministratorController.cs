@@ -52,7 +52,7 @@ namespace RemotePatientCare.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = CustomRoles.GlobalAdmin)]
+        [Authorize(Roles = CustomRoles.GlobalAdmin + "," + CustomRoles.HospitalAdministrator)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -123,7 +123,7 @@ namespace RemotePatientCare.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = CustomRoles.HospitalAdministrator)]
+        [Authorize(Roles = CustomRoles.GlobalAdmin + "," + CustomRoles.HospitalAdministrator)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

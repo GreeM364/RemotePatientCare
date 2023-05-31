@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using RemotePatientCare.DAL.Identity;
+using RemotePatientCare.DAL.Models;
 using RemotePatientCare.DAL.Repository.IRepository;
 using RemotePatientCare.Utility;
 using System.IdentityModel.Tokens.Jwt;
@@ -57,7 +58,7 @@ namespace RemotePatientCare.DAL.Infrastructure
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var domainUser = await _userRepository.GetByIdAsync(user.Id);
+            var domainUser = await _userRepository.GetAsync(user.Id, "Doctor,Patient,CaregiverPatient,HospitalAdministrator");
 
             if (domainUser?.Doctor != null)
                 claims.Add(new Claim(CustomRoles.Doctor, domainUser.Doctor.Id));

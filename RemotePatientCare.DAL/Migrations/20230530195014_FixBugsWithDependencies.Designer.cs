@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RemotePatientCare.DAL.Data;
 
@@ -11,9 +12,11 @@ using RemotePatientCare.DAL.Data;
 namespace RemotePatientCare.DAL.Migrations
 {
     [DbContext(typeof(RemotePatientCareDbContext))]
-    partial class RemotePatientCareDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230530195014_FixBugsWithDependencies")]
+    partial class FixBugsWithDependencies
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

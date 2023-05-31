@@ -64,21 +64,31 @@ namespace RemotePatientCare.DAL.Repository
             return query.ToList();
         }
 
-        public virtual Task<T> GetByIdAsync(string id)
+        public virtual async Task<T> GetByIdAsync(string id)
         {
-            return dbSet.FirstOrDefaultAsync(x => x.Id == id);
+            return await dbSet.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task RemoveAsync(T entity)
+        public virtual async Task RemoveAsync(T entity)
         {
             dbSet.Remove(entity);
             await SaveAsync();
         }
 
-        public async Task RemoveRange(IEnumerable<T> entity)
+        public async Task RemoveRangeAsync(IEnumerable<T> entity)
         {
             dbSet.RemoveRange(entity);
             await SaveAsync();
+        }
+
+        public async Task<T> UpdateAsync(T entity)
+        {
+            entity.LastModifiedDate = DateTime.Now;
+
+            dbSet.Update(entity);
+
+            await SaveAsync();
+            return entity;
         }
 
         public async Task SaveAsync()
