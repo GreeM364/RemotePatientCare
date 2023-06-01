@@ -62,7 +62,7 @@ namespace RemotePatientCare.BLL.Services
 
         public async Task<DoctorDTO> UpdateAsync(string id, DoctorUpdateDTO request)
         {
-            var updateEntity = await _doctorRepository.GetByIdAsync(id);
+            var updateEntity = await _doctorRepository.GetAsync(a => a.Id == id, "User"); ;
 
             if (request == null)
                 throw new BadRequestException("The received model of Doctor is null");

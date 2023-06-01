@@ -61,7 +61,7 @@ namespace RemotePatientCare.BLL.Services
 
         public async Task<HospitalAdministratorDTO> UpdateAsync(string id, HospitalAdministratorUpdateDTO request)
         {
-            var updateEntity = await _hospitalAdministratorRepository.GetByIdAsync(id);
+            var updateEntity = await _hospitalAdministratorRepository.GetAsync(a => a.Id == id, "User");
 
             if (request == null)
                 throw new BadRequestException("The received model of Hospital Administrator is null");
